@@ -28,6 +28,14 @@ a {
   color: black;
 }
 
+.home-logo {
+  color: white;
+  margin-top: 0;
+  padding: 16px;
+}
+
+.home-logo
+
 
 
 .login-message {
@@ -55,7 +63,7 @@ a {
 }
 
 .green {
-  background-color: lightgreen
+  background-color: rgb(54, 193, 54)
 }
 
 .App-link {

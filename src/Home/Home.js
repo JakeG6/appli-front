@@ -33,7 +33,7 @@ class Home extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleLogin = this.handleLogin.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
-        
+        this.handleRegistration = this.handleRegistration.bind(this)   
     }
 
     handleOpen = () => {
@@ -74,22 +74,23 @@ class Home extends Component {
         event.preventDefault();
      }
 
-     handleRegistration() {
+     handleRegistration = event => {
         axios.post('http://localhost:4242/createuser', {
             username: this.state.newUsername,
             password: this.state.newPassword
           })
-          .then(function (response) {
+          .then( (response) => {
+            console.log(this.state.newUsername, this.state.newPassword)
             console.log(response);
             this.handleClose()
             
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
           });
-    }
 
-    
+          event.preventDefault();
+    }
 
     render() {
 
@@ -97,12 +98,12 @@ class Home extends Component {
 
         return (
             <div>
-                <h1>APPLI</h1>
+                <h1 className="green home-logo" >APPLI</h1>
                 <div className="login-message">
                     <h4>{this.state.loginMessage}</h4>
                 </div>
                 <form onSubmit={this.handleLogin} style={{ padding: 8 }}>
-                    <Grid container spacing={16} direction="row" justify="center"   className="green">
+                    <Grid container spacing={16} direction="row" justify="center">
                         <Grid item xs={2} >
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="component-simple">Name</InputLabel>
@@ -126,20 +127,18 @@ class Home extends Component {
                 
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose}>
                     <h2>Register for an account</h2>
-                   
-                    <form onSubmit={this.handleRegistration}
-                     style={{ padding: 8 }}>
+                    <form onSubmit={this.handleRegistration} style={{ padding: 8 }}>
                         <Grid container spacing={16}  justify="center">
                             <Grid item xs={6} >
-                                <FormControl >
+                                <FormControl required="true">
                                     <InputLabel htmlFor="component-simple">Your Username</InputLabel>
-                                    <Input id="component-simple" value={this.state.newUsername} />
+                                    <Input id="component-simple" value={this.state.newUsername} onChange={this.handleChange('newUsername')}/>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={6} >
-                                <FormControl >
+                                <FormControl required="true">
                                     <InputLabel htmlFor="component-simple">Your Password</InputLabel>
-                                    <Input id="component-simple" value={this.state.newPassword}/>
+                                    <Input id="component-simple" value={this.state.newPassword} onChange={this.handleChange('newPassword')} />
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
@@ -148,9 +147,7 @@ class Home extends Component {
                         </Grid>
                     </form>
                 </Dialog>
-                
-                    
-               
+                      
             </div>
         )
     }
