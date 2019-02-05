@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 import Home from './Home/Home.js';
 import UserView from './UserView/UserView.js'
 import SignupSuccess from './SignupSuccess/SignupSuccess.js'
 import './App.css';
+
+library.add(faArrowLeft)
+
 
 class App extends Component {
 
@@ -79,7 +87,7 @@ class App extends Component {
         <div className="App">
           <div className="portfolioBar">
             <div className="arrowContainer">
-              <a href="#"><i className="fas fa-arrow-left fa-3x"></i></a>
+              <a href="#"><FontAwesomeIcon icon="arrow-left" color="black" size="3x" /></a>
             </div>
           </div>
           <Route exact path="/" render={(props) => 
