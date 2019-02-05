@@ -13,13 +13,14 @@ class UserView extends Component {
 
   render() {
     
-    let loggedIn = localStorage.getItem("authorized");
-
+    let loggedIn = localStorage.getItem("authorized")
+    let currentUser = localStorage.getItem("currentUser")
+    let currentUserId = localStorage.getItem("currentUserId")
     if (loggedIn === "true") {
       return (
         <div className="App">
-          <h1>Hello {this.props.currentUser}. You are logged into the user view.</h1>
-          <h1>Your user id is {this.props.currentUserId}</h1>
+          <h1>Hello {currentUser}. You are logged into the user view.</h1>
+          <h1>Your user id is {currentUserId}.</h1>
           <Button variant="contained" color="primary" className="white-text" onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
        </div>
       );

@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import Modal from '@material-ui/core/Modal';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
 class Home extends Component {
 
@@ -28,8 +22,8 @@ class Home extends Component {
             newUsername: '',
             newPassword: '',
             returnedUser: undefined,
-            registrationMessage: ''
-
+            registrationMessage: '',
+            redirectToSignupSuccess: false
         }
         this.checkUniqueUsername = this.checkUniqueUsername.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -67,6 +61,7 @@ class Home extends Component {
     }
 
     handleLogin = event => {
+
         //Make a network call somewhere
         axios.get(`http://localhost:4242/login?username="${this.state.name}"&password="${this.state.password}"`)
         .then((response) => {
@@ -75,8 +70,8 @@ class Home extends Component {
                     console.log("good job")
                         this.props.setCurrentUser(response)
                         console.log(this.props.currentUser)
-                        localStorage.setItem("authorized", "true")
-
+                        //localStorage.setItem("authorized", "true")
+                        //localStorage.setItem("currentUser", this.state)
                         this.props.history.push('/inner')
                     
             }
@@ -93,36 +88,56 @@ class Home extends Component {
     }
 
     handleRegistration = event => {
-        //console.log('the event is firing')
-        this.checkUniqueUsername(this.state.newUsername)
-        .then(isUnique => {
-            console.log(isUnique)
+        //check that username and passwords aren't empty strings
+        if (this.state.newUsername.length() > 0 && this.state.newPassword.length() > 0) {
+            //check that the new username isn't already in the database
+            this.checkUniqueUsername(this.state.newUsername)
+            .then(isUnique => {
+                console.log(isUnique)
 
-            if (isUnique === true) {
-                console.log("the username is uniqe")
-                axios.post('http://localhost:4242/createuser', {
-                    username: this.state.newUsername,
-                    password: this.state.newPassword
-                    })
-                    .then( (response) => {
-                        console.log(this.state.newUsername, this.state.newPassword)
-                        console.log(response)
-                        this.handleClose()
-            
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-    
-            }
-        })
+                if (isUnique === true) {
+                    //console.log("the username is unique")
+                    axios.post('http://localhost:4242/createuser', {
+                        username: this.state.newUsername,
+                        password: this.state.newPassword
+                        })
+                        .then( (response) => {
+                            //console.log(this.state.newUsername, this.state.newPassword)
+                            //console.log(response)
+                            //r
+                            console.log(response)
+                            this.setState({redirectToSignupSuccess: true}, () => {
+                                console.log(this.state.redirectToSignupSuccess)
+
+                            })
+                            //this.handleClose()
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+            })
+        }
+        else {
+            this.setState({registrationMessage: "Sorry, but we need a username and password for you to sign up"})
+
+        }
         
         event.preventDefault();        
     }
 
     render() {
+        let isAuthed = localStorage.getItem("authorized");
 
-        
+        let redirectToSignupSuccess = this.state.redirectToSignupSuccess
+
+        if (isAuthed === "true") {
+            return (<Redirect to='/inner' />)
+        }
+
+        if (redirectToSignupSuccess === true) {
+            return (<Redirect to='/signupsuccess' />)
+        }
 
         return (
             <div>
@@ -145,7 +160,7 @@ class Home extends Component {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                                    <Button color="secondary" label="submit" type="Submit" variant="contained" >Log In</Button>
+                            <Button  color="secondary" label="submit" type="Submit" variant="contained" >Log In</Button>
                         </Grid>
                     </Grid>
                 </form>

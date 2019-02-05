@@ -46,7 +46,10 @@ class App extends Component {
 
   setCurrentUser(user) {
     this.setState({currentUser: user.data.username, currentUserId: user.data.user_id}, () => {
-      console.log(`the current user is ${this.state.currentUser}. the user id is ${this.state.currentUserId}`)
+      //console.log(`the current user is ${this.state.currentUser}. the user id is ${this.state.currentUserId}`)
+      localStorage.setItem("authorized", "true")
+      localStorage.setItem("currentUser", this.state.currentUser)
+      localStorage.setItem("currentUserId", this.state.currentUserId.toString())
     })
   }
 
@@ -61,6 +64,8 @@ class App extends Component {
 
   handleLogout() {
       localStorage.setItem("authorized", "false")
+      localStorage.removeItem("currentUser")
+      localStorage.removeItem("currentUserId")
   }
 
   componentDidMount() {
@@ -80,9 +85,7 @@ class App extends Component {
           <Route exact path="/" render={(props) => 
             <Home authorizeUser={this.authorizeUser} setCurrentUser={this.setCurrentUser} currentUser={this.state.currentUser}  {...props} />
           }/>
-          <Route exact path="/signupsuccess" render={(props) => 
-            <Home authorizeUser={this.authorizeUser} setCurrentUser={this.setCurrentUser} currentUser={this.state.currentUser}  {...props} />
-          }/>
+          <Route path="/signupsuccess" component={SignupSuccess} />
           <Route exact path="/inner" render={(props) => 
             <UserView currentUser={this.state.currentUser} currentUserId={this.state.currentUserId} handleLogout={this.handleLogout} {...props} />
           }/>
