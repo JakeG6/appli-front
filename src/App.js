@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from './Home/Home.js';
 import UserView from './UserView/UserView.js'
+import SignupSuccess from './SignupSuccess/SignupSuccess.js'
 import './App.css';
 
 class App extends Component {
@@ -10,7 +11,7 @@ class App extends Component {
 
     super(props)
     this.state = {
-      //authorized: false,
+      authorized: false,
       currentUser: '',
       currentUserId: 0
     }
@@ -76,7 +77,10 @@ class App extends Component {
               <a href="#"><i className="fas fa-arrow-left fa-3x"></i></a>
             </div>
           </div>
-          <Route exact path="/" exact path='/' render={(props) => 
+          <Route exact path="/" render={(props) => 
+            <Home authorizeUser={this.authorizeUser} setCurrentUser={this.setCurrentUser} currentUser={this.state.currentUser}  {...props} />
+          }/>
+          <Route exact path="/signupsuccess" render={(props) => 
             <Home authorizeUser={this.authorizeUser} setCurrentUser={this.setCurrentUser} currentUser={this.state.currentUser}  {...props} />
           }/>
           <Route exact path="/inner" render={(props) => 

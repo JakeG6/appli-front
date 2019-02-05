@@ -27,9 +27,11 @@ class Home extends Component {
             password: '',
             newUsername: '',
             newPassword: '',
-            returnedUser: undefined
+            returnedUser: undefined,
+            registrationMessage: ''
 
         }
+        this.checkUniqueUsername = this.checkUniqueUsername.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleLogin = this.handleLogin.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
@@ -47,6 +49,22 @@ class Home extends Component {
     handleChange = prop => event => {
         this.setState({ [prop]: event.target.value });
       };
+
+    checkUniqueUsername(username) {
+        return axios.get(`http://localhost:4242/checkuniquename/${username}`)
+            .then((response) => {
+                if (response.data === false) {
+                    this.setState({registrationMessage: "Sorry, but that username is taken"})
+                    return false
+                }
+                else {
+                    return true
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     handleLogin = event => {
         //Make a network call somewhere
@@ -72,24 +90,34 @@ class Home extends Component {
         });
 
         event.preventDefault();
-     }
+    }
 
-     handleRegistration = event => {
-        axios.post('http://localhost:4242/createuser', {
-            username: this.state.newUsername,
-            password: this.state.newPassword
-          })
-          .then( (response) => {
-            console.log(this.state.newUsername, this.state.newPassword)
-            console.log(response);
-            this.handleClose()
+    handleRegistration = event => {
+        //console.log('the event is firing')
+        this.checkUniqueUsername(this.state.newUsername)
+        .then(isUnique => {
+            console.log(isUnique)
+
+            if (isUnique === true) {
+                console.log("the username is uniqe")
+                axios.post('http://localhost:4242/createuser', {
+                    username: this.state.newUsername,
+                    password: this.state.newPassword
+                    })
+                    .then( (response) => {
+                        console.log(this.state.newUsername, this.state.newPassword)
+                        console.log(response)
+                        this.handleClose()
             
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-
-          event.preventDefault();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+    
+            }
+        })
+        
+        event.preventDefault();        
     }
 
     render() {
@@ -123,25 +151,24 @@ class Home extends Component {
                 </form>
                 <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
 
-                
-                
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose}>
                     <h2>Register for an account</h2>
                     <form onSubmit={this.handleRegistration} style={{ padding: 8 }}>
                         <Grid container spacing={16}  justify="center">
                             <Grid item xs={6} >
-                                <FormControl required="true">
+                                <FormControl required={true}>
                                     <InputLabel htmlFor="component-simple">Your Username</InputLabel>
                                     <Input id="component-simple" value={this.state.newUsername} onChange={this.handleChange('newUsername')}/>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={6} >
-                                <FormControl required="true">
+                                <FormControl required={true}>
                                     <InputLabel htmlFor="component-simple">Your Password</InputLabel>
                                     <Input id="component-simple" value={this.state.newPassword} onChange={this.handleChange('newPassword')} />
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
+                                <p>{this.state.registrationMessage}</p>
                                 <Button color="secondary" label="submit" type="Submit" variant="contained">Create Account</Button>          
                             </Grid>
                         </Grid>
