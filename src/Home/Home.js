@@ -88,8 +88,10 @@ class Home extends Component {
     }
 
     handleRegistration = event => {
+        event.preventDefault();
+        console.log('hey we are logging')
         //check that username and passwords aren't empty strings
-        if (this.state.newUsername.length() > 0 && this.state.newPassword.length() > 0) {
+        if (this.state.newUsername.length > 0 && this.state.newPassword.length > 0) {
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
@@ -102,15 +104,15 @@ class Home extends Component {
                         password: this.state.newPassword
                         })
                         .then( (response) => {
-                            //console.log(this.state.newUsername, this.state.newPassword)
-                            //console.log(response)
-                            //r
+                           
                             console.log(response)
                             this.setState({redirectToSignupSuccess: true}, () => {
                                 console.log(this.state.redirectToSignupSuccess)
 
+                                
                             })
-                            //this.handleClose()
+                            
+                            //this.props.history.push('/signupsuccess')
                         })
                         .catch((error) => {
                             console.log(error);
@@ -123,7 +125,7 @@ class Home extends Component {
 
         }
         
-        event.preventDefault();        
+                
     }
 
     render() {
@@ -136,12 +138,12 @@ class Home extends Component {
         }
 
         if (redirectToSignupSuccess === true) {
-            return (<Redirect to='/signupsuccess' />)
+            return (<Redirect to='/signupsuccess' push={true}/>)
         }
 
         return (
             <div>
-                <h1 className="green home-logo" >APPLI</h1>
+                <h1 className="green home-logo">APPLi</h1>
                 <div className="login-message">
                     <h4>{this.state.loginMessage}</h4>
                 </div>
@@ -188,13 +190,10 @@ class Home extends Component {
                             </Grid>
                         </Grid>
                     </form>
-                </Dialog>
-                      
+                </Dialog>   
             </div>
         )
     }
-
-
 }
 
 export default Home

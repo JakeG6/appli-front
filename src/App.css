@@ -34,7 +34,11 @@ a {
   padding: 16px;
 }
 
-.home-logo
+.home-logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 300%;
+  letter-spacing: 3px;
+}
 
 
 
