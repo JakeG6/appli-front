@@ -152,13 +152,13 @@ class Home extends Component {
                         <Grid item xs={2} >
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="component-simple">Name</InputLabel>
-                                <Input id="component-simple" value={this.state.name}  onChange={this.handleChange('name')} />
+                                <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
                             </FormControl>
                         </Grid>
                         <Grid item xs={2} >
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="component-simple">Password</InputLabel>
-                                <Input id="component-simple" value={this.state.password} onChange={this.handleChange('password')} />
+                                <Input id="component-simple" autoComplete='off' value={this.state.password} onChange={this.handleChange('password')} />
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
@@ -168,7 +168,7 @@ class Home extends Component {
                 </form>
                 <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
 
-                <Dialog open={this.state.dialogueOpen} onClose={this.handleClose}>
+                <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">
                     <h2>Register for an account</h2>
                     <form onSubmit={this.handleRegistration} style={{ padding: 8 }}>
                         <Grid container spacing={16}  justify="center">
