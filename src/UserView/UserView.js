@@ -7,10 +7,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
@@ -24,7 +20,6 @@ class UserView extends Component {
     super(props)
     this.state = {
       open: false
-
     }
 
     this.handleClickOpen = this.handleClickOpen.bind(this)
@@ -52,14 +47,13 @@ class UserView extends Component {
         <AppBar position="static">
           <Toolbar  color={primary}>
           <Button className="white-text" onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-
           <p>Hello {currentUser}. You are logged into the user view.</p>
           <p>Your user id is {currentUserId}.</p>
           </Toolbar>
         </AppBar>         
         <p>This is where your tickets will go.</p>
-        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-          <NewTrackerDialog />
+        <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
+          <NewTrackerDialog cancel={this.handleClose} />
         </Dialog>
         <Fab color="primary" aria-label="Add" onClick={this.handleClickOpen}>
           <AddIcon />

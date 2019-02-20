@@ -89,7 +89,7 @@ class Home extends Component {
 
     handleRegistration = event => {
         event.preventDefault();
-        console.log('hey we are logging')
+        //console.log('hey we are logging')
         //check that username and passwords aren't empty strings
         if (this.state.newUsername.length > 0 && this.state.newPassword.length > 0) {
             //check that the new username isn't already in the database
@@ -169,7 +169,7 @@ class Home extends Component {
                 <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
 
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">
-                    <h2>Register for an account</h2>
+                    <h2>Register for an Account</h2>
                     <form onSubmit={this.handleRegistration} style={{ padding: 8 }}>
                         <Grid container spacing={16}  justify="center">
                             <Grid item xs={6} >

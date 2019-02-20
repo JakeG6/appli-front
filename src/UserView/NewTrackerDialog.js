@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import lightGreen from '@material-ui/core/colors/lightGreen';
-
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Grid from '@material-ui/core/Grid';
@@ -25,11 +25,12 @@ class NewTrackerDialog extends Component {
         applicationNotes: '',
         calledForInterview: false,
         jobOffered: false,
-        acceptedOffer: false
+        acceptedOffer: false,
+        archived: false
       }
       this.handleChange = this.handleChange.bind(this)
       this.handleSwitch = this.handleSwitch.bind(this)
-
+      this.postTicket = this.postTicket.bind(this)
     }
 
     handleChange = prop => event => {
@@ -40,13 +41,32 @@ class NewTrackerDialog extends Component {
       this.setState({ [name]: event.target.checked });
     };
 
+    postTicket = () => {
+      axios({
+        method: 'post',
+        url: '/user/12345',
+        data: {
+          userId: null,
+          company: this.state.companyName,
+          position: this.state.position,
+          resumeLink: this.state.resumeLink,
+          includesCoverLetter: this.state.includesCoverLetter,
+          applicationNotes: this.state.applicationNotes,
+          calledForInterview: this.state.calledForInterview,
+          jobOffered: this.state.jobOffered,
+          acceptedOffer: this.state.acceptedOffer,
+          timeStamp: new Date.now(),
+          archived: this.state.archived
+        }
+      });
+    }
+
     render() {
       
         return (
           <div className="App" style={{ padding: 12 }}>
-            <DialogTitle id="form-dialog-title">Create an Application Tracker</DialogTitle>
+            <DialogTitle id="form-dialog-title">Create an Application Ticket</DialogTitle>
             <form>
-
               <Grid container spacing={24}>
                 <Grid item xs={6}>
                   <TextField
@@ -71,7 +91,7 @@ class NewTrackerDialog extends Component {
                   />                    
                 </Grid>
               
-                  <Grid container spacing={0}>
+                  <Grid container spacing={0} j>
                     <Grid item xs={6}>
                       <TextField
                         label="Resume"
@@ -81,7 +101,7 @@ class NewTrackerDialog extends Component {
                         variant="filled"
                       />     
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -108,7 +128,8 @@ class NewTrackerDialog extends Component {
                     variant="filled"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
+                
                   <FormControlLabel
                     control={
                       <Switch
@@ -122,36 +143,57 @@ class NewTrackerDialog extends Component {
                     labelPlacement="start"
                   />
                 </Grid>
-                <Grid item xs={6}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={this.state.jobOffered}
-                        onChange={this.handleSwitch('jobOffered')}
-                        value="jobOffered"
-                        color="primary"
+          
+                  {this.state.calledForInterview ?
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={this.state.jobOffered}
+                            onChange={this.handleSwitch('jobOffered')}
+                            value="jobOffered"
+                            color="primary"
+                          />
+                        }
+                        label="Have I Been Offered the Position?"
+                        labelPlacement="start"
                       />
-                    }
-                    label="Have I Been Offered the Position?"
-                    labelPlacement="start"
-                  />
-                </Grid>
+                    </Grid>
+                  : null }         
+
+                  {this.state.jobOffered && this.state.calledForInterview ?
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                      control={
+                        <Switch
+                          checked={this.state.acceptedOffer}
+                          onChange={this.handleSwitch('acceptedOffer')}
+                          value="acceptedOffer"
+                          color="primary"
+                        />
+                      }
+                      label="Have I Accepted the Position?"
+                      labelPlacement="start"
+                      />
+                    </Grid>
+                  : null}
+                  
+                
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={this.state.acceptedOffer}
-                        onChange={this.handleSwitch('acceptedOffer')}
-                        value="acceptedOffer"
-                        color="primary"
-                      />
-                    }
-                    label="Have I Accepted the Position?"
-                    labelPlacement="start"
-                  />
+                  <Grid container spacing={8} justify="center">
+                    <Grid item xs={3} >
+                      < Button variant="contained">
+                        Create
+                      </Button>
+                    </Grid>
+                    <Grid item xs={3} >
+                      < Button variant="contained" onClick={this.props.cancel}>
+                        Cancel
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </Grid>
-              </Grid>
-                               
+              </Grid>            
             </form>
          </div>
         );
