@@ -34,15 +34,15 @@ class Home extends Component {
 
     handleOpen = () => {
         this.setState({ dialogueOpen: true });
-      };
+    };
     
-      handleClose = () => {
+    handleClose = () => {
         this.setState({ dialogueOpen: false });
-      };
+    };
 
     handleChange = prop => event => {
         this.setState({ [prop]: event.target.value });
-      };
+    };
 
     checkUniqueUsername(username) {
         return axios.get(`http://localhost:4242/checkuniquename/${username}`)
@@ -73,7 +73,6 @@ class Home extends Component {
                         //localStorage.setItem("authorized", "true")
                         //localStorage.setItem("currentUser", this.state)
                         this.props.history.push('/inner')
-                    
             }
             else {
                 this.setState({loginMessage: "Login failed: wrong username or password"})
@@ -122,10 +121,7 @@ class Home extends Component {
         }
         else {
             this.setState({registrationMessage: "Sorry, but we need a username and password for you to sign up"})
-
         }
-        
-                
     }
 
     render() {

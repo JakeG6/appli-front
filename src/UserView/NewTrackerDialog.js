@@ -9,7 +9,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
-
 import Switch from '@material-ui/core/Switch';
 
 
@@ -18,6 +17,7 @@ class NewTrackerDialog extends Component {
     constructor(props) {
       super(props)
       this.state = {
+        userId: this.props.currentUserId,
         companyName: '',
         positionTitle: '',
         resumeLink: '',
@@ -26,7 +26,7 @@ class NewTrackerDialog extends Component {
         calledForInterview: false,
         jobOffered: false,
         acceptedOffer: false,
-        archived: false
+        
       }
       this.handleChange = this.handleChange.bind(this)
       this.handleSwitch = this.handleSwitch.bind(this)
@@ -41,12 +41,14 @@ class NewTrackerDialog extends Component {
       this.setState({ [name]: event.target.checked });
     };
 
-    postTicket = () => {
+    postTicket = event => {
+      event.preventDefault();
+
       axios({
         method: 'post',
-        url: '/user/12345',
+        url: 'http://localhost:4242/createticket',
         data: {
-          userId: null,
+          userId: this.state.userId,
           company: this.state.companyName,
           position: this.state.position,
           resumeLink: this.state.resumeLink,
@@ -55,10 +57,19 @@ class NewTrackerDialog extends Component {
           calledForInterview: this.state.calledForInterview,
           jobOffered: this.state.jobOffered,
           acceptedOffer: this.state.acceptedOffer,
-          timeStamp: new Date.now(),
-          archived: this.state.archived
         }
+      }).then(function (response) {
+        console.log("the call worked. it's working")
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log("it's not working")
+        console.log(error);
       });
+    }
+
+    componentDidMount() {
+      console.log(this.state.userId)
     }
 
     render() {
@@ -66,7 +77,8 @@ class NewTrackerDialog extends Component {
         return (
           <div className="App" style={{ padding: 12 }}>
             <DialogTitle id="form-dialog-title">Create an Application Ticket</DialogTitle>
-            <form>
+
+            <form onSubmit={this.postTicket}>
               <Grid container spacing={24}>
                 <Grid item xs={6}>
                   <TextField
@@ -182,7 +194,7 @@ class NewTrackerDialog extends Component {
                 <Grid item xs={12}>
                   <Grid container spacing={8} justify="center">
                     <Grid item xs={3} >
-                      < Button variant="contained">
+                      < Button variant="contained" label="submit" type="Submit">
                         Create
                       </Button>
                     </Grid>
@@ -197,7 +209,6 @@ class NewTrackerDialog extends Component {
             </form>
          </div>
         );
-  
     }
   }
   

@@ -38,12 +38,12 @@ class App extends Component {
   
 
   rememberAuthorization() {
-    
+
     // if the key exists in localStorage
     if (localStorage.hasOwnProperty("authorized")) {
       // get the key's value from localStorage
       let value = localStorage.getItem("authorized");
-
+      
       // parse the localStorage string and setState
       try {
         value = JSON.parse(value);
@@ -82,6 +82,7 @@ class App extends Component {
 
   componentDidMount() {
     this.rememberAuthorization();
+    console.log(this.state.currentUserId)
   }
 
   render() {

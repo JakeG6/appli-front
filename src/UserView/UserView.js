@@ -19,7 +19,8 @@ class UserView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false
+      open: false,
+      currentUser: this.props.currentUser
     }
 
     this.handleClickOpen = this.handleClickOpen.bind(this)
@@ -33,6 +34,30 @@ class UserView extends Component {
   handleClose() {
     this.setState({open: false})
   }
+
+  componentDidMount() {
+    //
+    console.log(this.state.currentUser)
+  }
+
+  // rememberAuthorization() {
+    
+  //   // if the key exists in localStorage
+  //   if (localStorage.hasOwnProperty("authorized")) {
+  //     // get the key's value from localStorage
+  //     let value = localStorage.getItem("authorized");
+
+  //     // parse the localStorage string and setState
+  //     try {
+  //       value = JSON.parse(value);
+  //       this.setState({ authorized: value });
+  //     } catch (e) {
+  //       // handle empty string
+  //       this.setState({ authorized: value });
+  //     }
+  //   }
+  
+  // }
 
 
   render() {
@@ -53,7 +78,7 @@ class UserView extends Component {
         </AppBar>         
         <p>This is where your tickets will go.</p>
         <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
-          <NewTrackerDialog cancel={this.handleClose} />
+          <NewTrackerDialog currentUserId={currentUserId} cancel={this.handleClose} />
         </Dialog>
         <Fab color="primary" aria-label="Add" onClick={this.handleClickOpen}>
           <AddIcon />
