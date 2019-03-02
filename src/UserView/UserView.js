@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import NewTrackerDialog from './NewTrackerDialog.js';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import lightGreen from '@material-ui/core/colors/lightGreen';
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -37,7 +35,7 @@ class UserView extends Component {
 
   componentDidMount() {
     //
-    console.log(this.state.currentUser)
+    //console.log(this.state.currentUser)
   }
 
   // rememberAuthorization() {
@@ -62,34 +60,27 @@ class UserView extends Component {
 
   render() {
     const primary = lightGreen.A400;
-    
-    let loggedIn = localStorage.getItem("authorized")
-    let currentUser = localStorage.getItem("currentUser")
-    let currentUserId = localStorage.getItem("currentUserId")
-    if (loggedIn === "true") {
       return (
         <div className="App">
         <AppBar position="static">
           <Toolbar  color={primary}>
           <Button className="white-text" onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-          <p>Hello {currentUser}. You are logged into the user view.</p>
-          <p>Your user id is {currentUserId}.</p>
+          <p>Hello FILL IN THE NAME. You are logged into the user view.</p>
+          <p>Your user id is FILL IN THE ID.</p>
           </Toolbar>
         </AppBar>         
         <p>This is where your tickets will go.</p>
         <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
-          <NewTrackerDialog currentUserId={currentUserId} cancel={this.handleClose} />
+          <NewTrackerDialog  cancel={this.handleClose} />
         </Dialog>
         <Fab color="primary" aria-label="Add" onClick={this.handleClickOpen}>
           <AddIcon />
         </Fab>
        </div>
       );
-    }
-
-    else { 
-      return (<Redirect to="/" />) }
-
+    
+    //else { 
+    //  return (<Redirect to="/" />) }
   }
 }
 
