@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -75,9 +76,13 @@ class App extends Component {
   }
 
   handleLogout() {
-      localStorage.setItem("authorized", "false")
-      localStorage.removeItem("currentUser")
-      localStorage.removeItem("currentUserId")
+    axios.get('/logout')
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   componentDidMount() {

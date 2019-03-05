@@ -45,7 +45,7 @@ class Home extends Component {
     };
 
     checkUniqueUsername(username) {
-        return axios.get(`http://localhost:4242/checkuniquename/${username}`)
+        return axios.get(`/checkuniquename/${username}`)
             .then((response) => {
                 if (response.data === false) {
                     this.setState({registrationMessage: "Sorry, but that username is taken"})
@@ -61,29 +61,25 @@ class Home extends Component {
     }
 
     handleLogin = event => {
+        event.preventDefault();
 
         //Make a network call somewhere
-        axios.get(`http://localhost:4242/login?username="${this.state.name}"&password="${this.state.password}"`)
+        axios.post(`/login`, {
+            username: this.state.name,
+            password: this.state.password
+        })
+        
+        //?username="${this.state.name}"&password="${this.state.password}"`)
         .then((response) => {
             //console.log(response)
-            if (response.data !== false) {
-                    console.log("good job")
-                        this.props.setCurrentUser(response)
-                        console.log(this.props.currentUser)
-                        //localStorage.setItem("authorized", "true")
-                        //localStorage.setItem("currentUser", this.state)
-                        this.props.history.push('/inner')
-            }
-            else {
-                this.setState({loginMessage: "Login failed: wrong username or password"})
-            }
+            this.props.history.push('/inner')
+            
         })
         .catch( (error) => {
             console.log(error);
             this.setState({loginMessage: "There is an error with the server. please try again later"})
-        });
+        })
 
-        event.preventDefault();
     }
 
     handleRegistration = event => {
@@ -98,7 +94,7 @@ class Home extends Component {
 
                 if (isUnique === true) {
                     //console.log("the username is unique")
-                    axios.post('http://localhost:4242/createuser', {
+                    axios.post('/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                         })
