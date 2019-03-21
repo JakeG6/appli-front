@@ -45,6 +45,7 @@ class Home extends Component {
     };
 
     checkUniqueUsername(username) {
+        console.log('this is the api. about to check for uniqueness')
         return axios.get(`/checkuniquename/${username}`)
             .then((response) => {
                 if (response.data === false) {
@@ -71,13 +72,15 @@ class Home extends Component {
         
         //?username="${this.state.name}"&password="${this.state.password}"`)
         .then((response) => {
-            //console.log(response)
+
+            console.log(response)
+            localStorage.setItem('jwtToken', response.data.token)
             this.props.history.push('/inner')
             
         })
         .catch( (error) => {
             console.log(error);
-            this.setState({loginMessage: "There is an error with the server. please try again later"})
+            this.setState({loginMessage: "There is an error with the server. please try again later."})
         })
 
     }
@@ -121,6 +124,7 @@ class Home extends Component {
     }
 
     render() {
+        
         let isAuthed = localStorage.getItem("authorized");
 
         let redirectToSignupSuccess = this.state.redirectToSignupSuccess

@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import ClearIcon from '@material-ui/icons/Clear';
+
 
 import Grid from '@material-ui/core/Grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -172,7 +174,6 @@ class NewTrackerDialog extends Component {
                       />
                     </Grid>
                   : null }         
-
                   {this.state.jobOffered && this.state.calledForInterview ?
                     <Grid item xs={12}>
                       <FormControlLabel
@@ -189,8 +190,6 @@ class NewTrackerDialog extends Component {
                       />
                     </Grid>
                   : null}
-                  
-                
                 <Grid item xs={12}>
                   <Grid container spacing={8} justify="center">
                     <Grid item xs={3} >
@@ -199,7 +198,7 @@ class NewTrackerDialog extends Component {
                       </Button>
                     </Grid>
                     <Grid item xs={3} >
-                      < Button variant="contained" onClick={this.props.cancel}>
+                      <Button variant="contained" onClick={this.props.cancel}>
                         Cancel
                       </Button>
                     </Grid>

@@ -78,3 +78,9 @@ a {
   color: #61dafb;
 }
 
+.ticket:hover {
+    cursor: pointer;
+  }
+
+
+
