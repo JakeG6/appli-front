@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import NewTrackerDialog from './NewTrackerDialog.js';
-import TicketDialog from './TicketDialog.js';
-import Ticket from './Ticket.js';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+
+import NewTrackerDialog from './NewTrackerDialog.js';
+import TicketDialog from './TicketDialog/TicketDialog.js';
+import Ticket from './Ticket.js';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import jwt_decode from 'jwt-decode';
 
 import Grid from '@material-ui/core/Grid';
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
@@ -98,7 +98,7 @@ class UserView extends Component {
               <Button className="white-text" onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
               <p>Hello {this.state.currentUsername}</p>           
             </Toolbar>
-          </AppBar>    
+          </AppBar>   
 
           <div style={{ padding: 8 }}>
             {(this.state.userTickets) ?

@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHandshake } from '@fortawesome/free-solid-svg-icons'
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons'
+import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
+import { faPhone } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faHandshake, faDoorOpen, faPhone, faDoorClosed)
+
 
 export function applicationProgress(ticket) {
     if (ticket.accepted_offer) {
