@@ -40,6 +40,13 @@ a {
   letter-spacing: 3px;
 }
 
+.userview-logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 200%;
+  letter-spacing: 3px;
+  margin: 0em 1em;
+}
+
 
 
 .login-message {

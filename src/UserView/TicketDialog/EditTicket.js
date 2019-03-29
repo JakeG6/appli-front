@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import BuildIcon from '@material-ui/icons/Build';
+
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 
+import DialogActions from '@material-ui/core/DialogActions';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -20,16 +21,75 @@ class EditTicket extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            ticketId: this.props.ticket.ticket_id,
+            companyName: this.props.ticket.company,
+            position: this.props.ticket.position,
+            resumeLink: this.props.ticket.resume_link,
+            includesCoverLetter: this.props.ticket.includes_cover_letter,
+            applicationNotes: this.props.ticket.application_notes,
+            calledForInterview: this.props.ticket.called_for_interview,
+            jobOffered: this.props.ticket.job_offered,
+            acceptedOffer: this.props.ticket.accepted_offer,
+            archived: this.props.ticket.archived,
 
         }
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSwitch = this.handleSwitch.bind(this)
+        this.updateTicket = this.updateTicket.bind(this)
     }
 
+    handleChange = prop => event => {
+        
+        this.setState({ [prop]: event.target.value });
+        
+    }
+
+    handleSwitch = name => event => {
+        this.setState({ [name]: event.target.checked });
+    }
+
+    updateTicket = (event) => {
+        event.preventDefault();
+
+        axios({
+            method: 'put',
+            url: `http://localhost:4242/updateticket/${this.state.ticketId}`,
+            data: {
+                ticketId: this.state.ticketId,
+                companyName: this.state.companyName,
+                position: this.state.position,
+                resumeLink: this.state.resumeLink,
+                includesCoverLetter: this.state.includesCoverLetter,
+                applicationNotes: this.state.applicationNotes,
+                calledForInterview: this.state.calledForInterview,
+                jobOffered: this.state.jobOffered,
+                acceptedOffer: this.state.acceptedOffer,
+                archived: 0
+            },
+            headers: {                
+                "Authorization": "Bearer " + localStorage.getItem('jwtToken')                 
+            }
+            
+        })
+        .then(response => {
+            console.log("the ticket was updated.")
+            return this.props.retrieveTickets()
+        })
+        .then(response => {
+            console.log("we've closed the dialog modal")
+            return this.props.toggleEditDisplay()
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
 
     render() {
         
         return (
             <div>
-                <form onSubmit={this.postTicket}>
+                <form onSubmit={this.updateTicket}>
                     <Grid container spacing={24}>
                         <Grid item xs={6}>
                             <TextField
@@ -46,9 +106,9 @@ class EditTicket extends Component {
                             <TextField
                                 required
                                 label="Position"
-                                value={this.state.positionTitle}
+                                value={this.state.position}
                                 placeholder="The Job Title"
-                                onChange={this.handleChange('positionTitle')}
+                                onChange={this.handleChange('position')}
                                 margin="normal"
                                 variant="filled"
                             />                    
@@ -103,7 +163,7 @@ class EditTicket extends Component {
                                 labelPlacement="start"
                             />
                         </Grid>
-                        {this.state.calledForInterview ?
+                        {this.state.calledForInterview == "true" ?
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={
@@ -136,27 +196,21 @@ class EditTicket extends Component {
                             </Grid>
                         : null}
                         <Grid item xs={12}>
-                            <Grid container spacing={8} justify="center">
-                                <Grid item xs={3} >
-                                < Button variant="contained" label="submit" type="Submit">
-                                    Create
-                                </Button>
-                                </Grid>
-                                <Grid item xs={3} >
-                                <Button variant="contained" onClick={this.props.cancel}>
+                            <DialogActions>
+                                <Button variant="contained" onClick={this.props.toggleEditDisplay}>
                                     Cancel
                                 </Button>
-                                </Grid>
-                            </Grid>
+                        
+                                <Button variant="contained" color="primary" label="submit" type="Submit">
+                                    Save 
+                                </Button>
+                            </DialogActions>
                         </Grid>
-                    </Grid>            
+                    </Grid>
+                               
                 </form>
-                <Button variant="contained" color="primary" onClick={this.props.toggleEditDisplay}>
-                    Cancel 
-                </Button>
-                <Button variant="contained" color="secondary" >
-                    Save
-                </Button>
+                
+                
             </div>
         )
     }

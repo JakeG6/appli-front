@@ -8,6 +8,12 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import BuildIcon from '@material-ui/icons/Build';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import TextField from '@material-ui/core/TextField';
@@ -15,7 +21,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CloseIcon from '@material-ui/icons/Clear';
 
 import Grid from '@material-ui/core/Grid';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
 import Switch from '@material-ui/core/Switch';
 
@@ -33,10 +38,35 @@ class TicketDetails extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            showDeleteWarning: false
 
         }
+        this.handleWarningDisplay = this.handleWarningDisplay.bind(this)
+        this.deleteTicket = this.deleteTicket.bind(this)
     }
 
+    handleWarningDisplay = () => {
+        (this.state.showDeleteWarning) ? 
+        this.setState({showDeleteWarning: false}) : this.setState({showDeleteWarning: true})
+    }
+
+    deleteTicket = () => {
+        console.log('about to deleteTicket')
+        axios.delete(`/deleteticket/${this.props.ticket.ticket_id}`, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
+            .then(response => {
+                console.log('it deleted')
+                this.props.handleTicketClose()
+                console.log("we've closed the dialog")
+                this.props.retrieveTickets()
+            })
+            .catch(error => {
+                console.log(error);
+                
+            });
+    }
+
+    
+//TypeError: Cannot read property 'forceUpdate' of undefined
     render() {
 
         const linkStyle = {
@@ -55,8 +85,17 @@ class TicketDetails extends Component {
                         <p>{this.props.ticket.position}</p>
                     </Grid>
                     <Grid item xs={4}>
-                        <h3>Resume Used</h3>                      
-                        <a href={this.props.ticket.resume_link} style={linkStyle}>Link</a>
+                        <h3>Resume Used</h3>
+                        {this.props.ticket.resume_link ?
+                            <div>
+                                <a href={this.props.ticket.resume_link} style={linkStyle}>Link</a>
+                            </div>
+                        :
+                            <div>
+                                <p>You didn't provide a link to your resume.</p>
+                            </div>
+                        }                      
+                        
                     </Grid>
                     <Grid item xs={6}>
                         <h2>Status</h2>
@@ -77,21 +116,40 @@ class TicketDetails extends Component {
                         }                       
                     </Grid>
                     <Grid item xs={12}>
-                        <p>{this.props.ticket.application_notes}</p>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Button variant="contained" color="secondary" >
-                            Delete 
-                            <DeleteIcon  />
-                        </Button>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Button variant="contained" color="primary" onClick={this.props.toggleEditDisplay}>
-                            Edit 
-                            <BuildIcon  />
-                        </Button>
+                        <p>{(this.props.ticket.application_notes) ? this.props.ticket.application_notes :
+                        "You didn't provide any notes."}</p>
                     </Grid>
                 </Grid>
+                <DialogActions>
+                    <Button variant="contained" color="primary" onClick={this.props.toggleEditDisplay}>
+                        Edit 
+                        <BuildIcon  />
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={this.handleWarningDisplay}>
+                        Delete 
+                        <DeleteIcon />
+                    </Button>  
+                </DialogActions>
+                <Dialog
+                open={this.state.showDeleteWarning}
+                onClose={this.handleWarningDisplay}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                >
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete this application ticket?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="contained" onClick={this.handleWarningDisplay} color='primary'>
+                            Cancel
+                        </Button>
+                        <Button variant="contained" color="secondary" onClick={this.deleteTicket}>
+                            Yes 
+                        </Button>
+                    </DialogActions>
+                </Dialog> 
             </div>
         )
     }

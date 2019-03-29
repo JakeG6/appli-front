@@ -56,7 +56,7 @@ class Home extends Component {
                     return true
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error);
             });
     }

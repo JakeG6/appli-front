@@ -30,6 +30,8 @@ class UserView extends Component {
       ticketDetails: ''
     }
 
+    this.retrieveTickets = this.retrieveTickets.bind(this)
+
     this.handleClickOpen = this.handleClickOpen.bind(this)
     this.handleTicketOpen = this.handleTicketOpen.bind(this)
 
@@ -44,15 +46,28 @@ class UserView extends Component {
 
   handleTicketOpen(ticket) {
     this.setState({ticketDetails: ticket, openTicket: true}, () => {
-      console.log(this.state.ticketDetails)
     })
   }
 
   handleClose() {
     this.setState({open: false})
   }
+
   handleTicketClose() {
     this.setState({openTicket: false})
+  }
+
+  retrieveTickets = () => {
+    
+    return axios.get('/retrievetickets', {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }}).then((tickets)=>{
+      console.log('we have retrieved the tickets', tickets);
+      this.setState({userTickets: tickets.data})
+      //dispatch(getUsersData(data));
+    }).catch((error)=>{
+      console.log('error ', error);
+      this.props.history.push('/')
+    });
+
   }
 
   componentDidMount() {
@@ -60,21 +75,13 @@ class UserView extends Component {
       let decoded = jwt_decode(localStorage.getItem('jwtToken'))
       console.log(decoded)
       this.setState({currentUsername: decoded.name})
-      axios.get('/retrievetickets', {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }}).then((tickets)=>{
-        console.log('data coming', tickets);
-        this.setState({userTickets: tickets.data})
-        //dispatch(getUsersData(data));
-      }).catch((error)=>{
-        console.log('error ', error);
-        this.props.history.push('/')
-      });
+      this.retrieveTickets()    
     }
     else {
       this.props.history.push('/')
     }
     
   }
-
 
   render() {
 
@@ -91,17 +98,19 @@ class UserView extends Component {
 
     //if the current time on rendering is earlier than the expiration date, show the page.
     if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) { 
+      
       return (
         <div className="App">
           <AppBar position="static" >
             <Toolbar color={primary} className="green">
               <Button className="white-text" onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-              <p>Hello {this.state.currentUsername}</p>           
+              <p>Hello {this.state.currentUsername}</p>  
+              <h1 className="green userview-logo">APPLi</h1>         
             </Toolbar>
           </AppBar>   
 
           <div style={{ padding: 8 }}>
-            {(this.state.userTickets) ?
+            {(this.state.userTickets.length > 1) ?
               <Grid container spacing={16} direction="row" justify="center" alignItems="center">
                 {this.state.userTickets.map((ticket, index) =>
 
@@ -117,12 +126,14 @@ class UserView extends Component {
 
           {/* new ticket Form */}
           <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
-            <NewTrackerDialog currentUsername={'yes'} cancel={this.handleClose} />
+            <NewTrackerDialog currentUsername={'yes'} cancel={this.handleClose} 
+            handleClose={this.handleClose} retrieveTickets={this.retrieveTickets}/>
           </Dialog>
 
           {/* view ticket details */}
           <Dialog open={this.state.openTicket} onClose={this.handleTicketClose} >
-            <TicketDialog close={this.handleTicketClose} ticket={this.state.ticketDetails} />
+            <TicketDialog close={this.handleTicketClose} handleTicketClose={this.handleTicketClose}
+              ticket={this.state.ticketDetails} retrieveTickets={this.retrieveTickets}  />
           </Dialog>
 
           <Fab onClick={this.handleClickOpen} style={fabStyle} >
@@ -137,6 +148,7 @@ class UserView extends Component {
     }
 
   }
+
 }
 
 export default UserView;

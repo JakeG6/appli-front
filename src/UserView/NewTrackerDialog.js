@@ -7,6 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import ClearIcon from '@material-ui/icons/Clear';
 
+import jwt_decode from 'jwt-decode';
+
 
 import Grid from '@material-ui/core/Grid';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -19,9 +21,9 @@ class NewTrackerDialog extends Component {
     constructor(props) {
       super(props)
       this.state = {
-        userId: this.props.currentUserId,
+        userId: '',
         companyName: '',
-        positionTitle: '',
+        position: '',
         resumeLink: '',
         includesCoverLetter: false,
         applicationNotes: '',
@@ -46,12 +48,14 @@ class NewTrackerDialog extends Component {
     postTicket = event => {
       event.preventDefault();
 
+      
+
       axios({
         method: 'post',
         url: 'http://localhost:4242/createticket',
         data: {
           userId: this.state.userId,
-          company: this.state.companyName,
+          companyName: this.state.companyName,
           position: this.state.position,
           resumeLink: this.state.resumeLink,
           includesCoverLetter: this.state.includesCoverLetter,
@@ -59,18 +63,47 @@ class NewTrackerDialog extends Component {
           calledForInterview: this.state.calledForInterview,
           jobOffered: this.state.jobOffered,
           acceptedOffer: this.state.acceptedOffer,
+          archived: 0
         }
-      }).then(function (response) {
-        console.log("the call worked. it's working")
-        console.log(response);
+      }).then(response => {
+        
+        console.log("the ticket was posted.")
+        this.props.handleClose()
+
+        
+        console.log("we've closed the dialog")
+        this.props.retrieveTickets()
+        
+        
+        
+        
+        
       })
-      .catch(function (error) {
-        console.log("it's not working")
+      .catch(error => {
+     
         console.log(error);
       });
+
+      
+      
     }
 
     componentDidMount() {
+    
+        if (localStorage.getItem('jwtToken')) {
+          let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+          console.log(decoded)
+          this.setState({userId: decoded.id}, () => {
+            console.log(`new tickets will go to ${this.state.userId}`)
+
+          })
+          
+        }
+        else {
+          this.props.history.push('/')
+        }
+        
+      
       console.log(this.state.userId)
     }
 
@@ -97,9 +130,9 @@ class NewTrackerDialog extends Component {
                   <TextField
                     required
                     label="Position"
-                    value={this.state.positionTitle}
+                    value={this.state.position}
                     placeholder="The Job Title"
-                    onChange={this.handleChange('positionTitle')}
+                    onChange={this.handleChange('position')}
                     margin="normal"
                     variant="filled"
                   />                    

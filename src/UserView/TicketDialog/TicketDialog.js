@@ -52,9 +52,11 @@ class TicketDialog extends Component {
             <div className="App" style={{ padding: 12 }}>
 
                 {!this.state.showEditForm ?
-                <TicketDetails ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} />
+                <TicketDetails ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
+                retrieveTickets={this.props.retrieveTickets} handleTicketClose={this.props.handleTicketClose}/>
                 :
-                <EditTicket toggleEditDisplay={this.toggleEditDisplay} />
+                <EditTicket ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
+                retrieveTickets={this.props.retrieveTickets}/>
                 }                                      
             </div>
         );
