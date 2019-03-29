@@ -25,11 +25,13 @@ class UserView extends Component {
     this.state = {
       open: false,
       openTicket: false,
+      showArchived: false,
       currentUsername: '',
       userTickets: [],
       ticketDetails: ''
     }
 
+    //this.addMostUpdatedTicket = this.addMostUpdatedTicket.bind(this)
     this.retrieveTickets = this.retrieveTickets.bind(this)
 
     this.handleClickOpen = this.handleClickOpen.bind(this)
@@ -39,6 +41,15 @@ class UserView extends Component {
     this.handleTicketClose = this.handleTicketClose.bind(this)
 
   }
+
+  // addMostUpdatedTicket(ticketId) {
+  //   return axios.get(`/retrieveticketbyid/${ticketId}`)
+  //     .then(response => {
+  //       const updatedTicket = response.data[0]
+  //       const index = updatedTicket.ticket_id
+        
+  //     })
+  // }
 
   handleClickOpen() {
     this.setState({open: true})
@@ -78,6 +89,7 @@ class UserView extends Component {
       this.retrieveTickets()    
     }
     else {
+      localStorage.removeItem('jwtToken')
       this.props.history.push('/')
     }
     

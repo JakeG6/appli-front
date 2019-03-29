@@ -48,8 +48,6 @@ class NewTrackerDialog extends Component {
     postTicket = event => {
       event.preventDefault();
 
-      
-
       axios({
         method: 'post',
         url: 'http://localhost:4242/createticket',
@@ -68,18 +66,15 @@ class NewTrackerDialog extends Component {
       }).then(response => {
         
         console.log("the ticket was posted.")
+        
+        return this.props.retrieveTickets()
+        
+      }).then(response => {  
         this.props.handleClose()
-
-        
         console.log("we've closed the dialog")
-        this.props.retrieveTickets()
         
         
-        
-        
-        
-      })
-      .catch(error => {
+      }).catch(error => {
      
         console.log(error);
       });

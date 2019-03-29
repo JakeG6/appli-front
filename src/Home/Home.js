@@ -7,6 +7,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Dialog from '@material-ui/core/Dialog';
 
+import jwt_decode from 'jwt-decode';
 
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
@@ -125,13 +126,20 @@ class Home extends Component {
 
     render() {
         
-        let isAuthed = localStorage.getItem("authorized");
+        if (localStorage.getItem("jwtToken")) {
+            //decode the jwt's payload.
+            let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+            //get the current time
+            let currentTime = Math.floor(Date.now() / 1000)
+
+            //if the current time on rendering is earlier than the expiration date, show the page.
+            if (currentTime < decoded.exp) {
+                return (<Redirect to='/inner' />)
+            }
+            else {}
+        }
 
         let redirectToSignupSuccess = this.state.redirectToSignupSuccess
-
-        if (isAuthed === "true") {
-            return (<Redirect to='/inner' />)
-        }
 
         if (redirectToSignupSuccess === true) {
             return (<Redirect to='/signupsuccess' push={true}/>)
@@ -162,6 +170,7 @@ class Home extends Component {
                         </Grid>
                     </Grid>
                 </form>
+
                 <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
 
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">

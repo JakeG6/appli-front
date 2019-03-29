@@ -54,10 +54,13 @@ class TicketDetails extends Component {
         console.log('about to deleteTicket')
         axios.delete(`/deleteticket/${this.props.ticket.ticket_id}`, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
             .then(response => {
-                console.log('it deleted')
+                console.log('it deleted')                
+                return this.props.retrieveTickets()
+
+            })
+            .then(response => {
                 this.props.handleTicketClose()
                 console.log("we've closed the dialog")
-                this.props.retrieveTickets()
             })
             .catch(error => {
                 console.log(error);
