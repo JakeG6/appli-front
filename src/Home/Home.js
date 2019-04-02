@@ -9,7 +9,7 @@ import Dialog from '@material-ui/core/Dialog';
 
 import jwt_decode from 'jwt-decode';
 
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as  Redirect } from "react-router-dom";
 
 class Home extends Component {
 
@@ -74,7 +74,6 @@ class Home extends Component {
         //?username="${this.state.name}"&password="${this.state.password}"`)
         .then((response) => {
 
-            console.log(response)
             localStorage.setItem('jwtToken', response.data.token)
             this.props.history.push('/inner')
             

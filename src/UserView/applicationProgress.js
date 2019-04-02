@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,7 +14,7 @@ export function applicationProgress(ticket) {
     if (ticket.accepted_offer) {
         return (
             <div>
-                <FontAwesomeIcon icon="handshake" color="black" size="7x" />
+                <FontAwesomeIcon icon="handshake" color="gold" size="7x" />
                 <h3>Offer Accepted</h3>
             </div>
         )

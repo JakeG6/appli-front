@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios';
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Home from './Home/Home.js';
 import UserView from './UserView/UserView.js'

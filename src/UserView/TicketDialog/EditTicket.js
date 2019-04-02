@@ -2,19 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import BuildIcon from '@material-ui/icons/Build';
 
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 
 import DialogActions from '@material-ui/core/DialogActions';
 
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CloseIcon from '@material-ui/icons/Clear';
 
 class EditTicket extends Component {
     
@@ -46,12 +42,14 @@ class EditTicket extends Component {
     }
 
     handleSwitch = name => event => {
-        this.setState({ [name]: event.target.checked });
+        this.setState({ [name]: event.target.checked }, () => {
+            console.log('this.state.archived: ', this.state.archived)
+        });
     }
 
     updateTicket = (event) => {
         event.preventDefault();
-
+        console.log('this ticket will be archived: ', this.state.archived)
         axios({
             method: 'put',
             url: `http://localhost:4242/updateticket/${this.state.ticketId}`,
@@ -65,19 +63,18 @@ class EditTicket extends Component {
                 calledForInterview: this.state.calledForInterview,
                 jobOffered: this.state.jobOffered,
                 acceptedOffer: this.state.acceptedOffer,
-                archived: 0
+                archived: this.state.archived
             },
             headers: {                
                 "Authorization": "Bearer " + localStorage.getItem('jwtToken')                 
-            }
+            }            
+        })
+        .then(response => {
+            return this.props.retrieveTickets()
             
         })
         .then(response => {
-            console.log("the ticket was updated.")
-            return this.props.retrieveTickets()
-        })
-        .then(response => {
-            console.log("we've closed the dialog modal")
+            this.props.getUpdatedTicketDetails()
             return this.props.toggleEditDisplay()
         })
         .catch(error => {
@@ -113,7 +110,7 @@ class EditTicket extends Component {
                                 variant="filled"
                             />                    
                         </Grid>                   
-                        <Grid container spacing={0} j>
+                        <Grid container spacing={0} >
                             <Grid item xs={6}>
                                 <TextField
                                     label="Resume"
@@ -136,7 +133,8 @@ class EditTicket extends Component {
                                     label="Includes a Cover Letter?"
                                     labelPlacement="start"
                                 />
-                            </Grid> 
+                            </Grid>
+                              
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -163,7 +161,7 @@ class EditTicket extends Component {
                                 labelPlacement="start"
                             />
                         </Grid>
-                        {this.state.calledForInterview == "true" ?
+                        {this.state.calledForInterview ?
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={
@@ -196,15 +194,33 @@ class EditTicket extends Component {
                             </Grid>
                         : null}
                         <Grid item xs={12}>
-                            <DialogActions>
-                                <Button variant="contained" onClick={this.props.toggleEditDisplay}>
-                                    Cancel
-                                </Button>
-                        
-                                <Button variant="contained" color="primary" label="submit" type="Submit">
-                                    Save 
-                                </Button>
-                            </DialogActions>
+                            <Grid container spacing = {24}>
+                                <Grid item xs={6}>
+                                    <FormControlLabel
+                                    control={
+                                    <Switch
+                                        checked={this.state.archived}
+                                        onChange={this.handleSwitch('archived')}
+                                        value="archived"
+                                        color="primary"
+                                    />
+                                    }
+                                    label="Archive this ticket?"
+                                    labelPlacement="start"
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <DialogActions>
+                                        <Button variant="contained" onClick={this.props.toggleEditDisplay}>
+                                            Cancel
+                                        </Button>
+                                
+                                        <Button variant="contained" color="primary" label="submit" type="Submit">
+                                            Save 
+                                        </Button>
+                                    </DialogActions>
+                                </Grid>
+                            </Grid>                                                       
                         </Grid>
                     </Grid>
                                

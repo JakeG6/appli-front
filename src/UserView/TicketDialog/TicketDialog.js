@@ -1,21 +1,7 @@
 import React, { Component } from 'react'
 import TicketDetails from './TicketDetails'
 import EditTicket from './EditTicket'
-import axios from 'axios'
 
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import BuildIcon from '@material-ui/icons/Build';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import CloseIcon from '@material-ui/icons/Clear';
-
-import Grid from '@material-ui/core/Grid';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 
@@ -53,10 +39,11 @@ class TicketDialog extends Component {
 
                 {!this.state.showEditForm ?
                 <TicketDetails ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
-                retrieveTickets={this.props.retrieveTickets} handleTicketClose={this.props.handleTicketClose}/>
+                retrieveTickets={this.props.retrieveTickets} handleTicketClose={this.props.handleTicketClose}
+                getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}/>
                 :
                 <EditTicket ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
-                retrieveTickets={this.props.retrieveTickets}/>
+                retrieveTickets={this.props.retrieveTickets} getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}/>
                 }                                      
             </div>
         );

@@ -64,13 +64,21 @@ a {
   align-items: center;
 }
 
-
 .red {
   background-color: red;
 }
 
 .registration-popup {
   text-align: center;
+}
+
+.ticket-tray {
+  background-color: #F5F5F5;
+  
+  height: 79vh;
+  
+  padding-left:5px;
+  padding-right:5px;
 }
 
 .blue {
@@ -85,9 +93,7 @@ a {
   color: #61dafb;
 }
 
-.ticket:hover {
-    cursor: pointer;
-  }
+
 
 
 
