@@ -43,7 +43,9 @@ class TicketDialog extends Component {
                 getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}/>
                 :
                 <EditTicket ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
-                retrieveTickets={this.props.retrieveTickets} getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}/>
+                retrieveTickets={this.props.retrieveTickets} showArchived={this.props.showArchived} 
+                getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}
+                handleTicketClose={this.props.handleTicketClose}/>
                 }                                      
             </div>
         );

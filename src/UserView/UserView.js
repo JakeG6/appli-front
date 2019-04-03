@@ -183,7 +183,7 @@ class UserView extends Component {
           <Dialog open={this.state.openTicket} onClose={this.handleTicketClose} >
             <TicketDialog close={this.handleTicketClose} handleTicketClose={this.handleTicketClose}
               ticket={this.state.ticketDetails} retrieveTickets={this.retrieveTickets}
-              getUpdatedTicketDetails = {this.getUpdatedTicketDetails}  />
+              getUpdatedTicketDetails = {this.getUpdatedTicketDetails} showArchived={this.state.showArchived} />
           </Dialog>
 
           

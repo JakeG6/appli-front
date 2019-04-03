@@ -70,13 +70,27 @@ class EditTicket extends Component {
             }            
         })
         .then(response => {
-            return this.props.retrieveTickets()
+            if (this.props.showArchived) {
+                return this.props.retrieveTickets().then(response => {
+                    this.props.getUpdatedTicketDetails()
+                    return this.props.toggleEditDisplay()
+                }).catch(error => {
+                    console.log(error)
+                });
+            }
+            else {
+                return this.props.retrieveTickets().then(response => {
+                    this.props.handleTicketClose()
+
+                }).catch(error => {
+                    console.log(error)
+                });
+            }
             
         })
-        .then(response => {
-            this.props.getUpdatedTicketDetails()
-            return this.props.toggleEditDisplay()
-        })
+        // .then(response => {
+            
+        // })
         .catch(error => {
             console.log(error)
         });
