@@ -49,7 +49,6 @@ class EditTicket extends Component {
 
     updateTicket = (event) => {
         event.preventDefault();
-        console.log('this ticket will be archived: ', this.state.archived)
         axios({
             method: 'put',
             url: `http://localhost:4242/updateticket/${this.state.ticketId}`,
@@ -71,15 +70,18 @@ class EditTicket extends Component {
         })
         .then(response => {
             if (this.props.showArchived) {
-                return this.props.retrieveTickets().then(response => {
-                    this.props.getUpdatedTicketDetails()
-                    return this.props.toggleEditDisplay()
+
+                this.props.retrieveTickets().then(response => {
+                    this.props.getUpdatedTicketDetails().then(response => {
+                        this.props.toggleEditDisplay()
+                    })
+                    
                 }).catch(error => {
                     console.log(error)
                 });
             }
             else {
-                return this.props.retrieveTickets().then(response => {
+                this.props.retrieveTickets().then(response => {
                     this.props.handleTicketClose()
 
                 }).catch(error => {
@@ -88,9 +90,6 @@ class EditTicket extends Component {
             }
             
         })
-        // .then(response => {
-            
-        // })
         .catch(error => {
             console.log(error)
         });

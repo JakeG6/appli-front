@@ -37,15 +37,12 @@ class Ticket extends Component {
       const styles = {
           //maxWidth: '300px',
           height: '300px',
-          backgroundColor: 'rgb(54, 193, 54)',
-    
-            color: 'white'
-          
-          
+          backgroundColor: 'rgb(54, 193, 54)',    
+            color: 'white'        
       }
       
       return (
-        <Card style={styles}>
+        <Card className={'ticket'} style={styles}>
           <CardHeader 
             
             title={this.props.ticket.company}

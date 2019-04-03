@@ -46,7 +46,6 @@ class Home extends Component {
     };
 
     checkUniqueUsername(username) {
-        console.log('this is the api. about to check for uniqueness')
         return axios.get(`/checkuniquename/${username}`)
             .then((response) => {
                 if (response.data === false) {
@@ -93,24 +92,20 @@ class Home extends Component {
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
-                console.log(isUnique)
 
                 if (isUnique === true) {
-                    //console.log("the username is unique")
                     axios.post('/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                         })
                         .then( (response) => {
                            
-                            console.log(response)
                             this.setState({redirectToSignupSuccess: true}, () => {
-                                console.log(this.state.redirectToSignupSuccess)
+                                this.props.history.push('/signupsuccess')
 
                                 
                             })
                             
-                            //this.props.history.push('/signupsuccess')
                         })
                         .catch((error) => {
                             console.log(error);
@@ -138,11 +133,11 @@ class Home extends Component {
             else {}
         }
 
-        let redirectToSignupSuccess = this.state.redirectToSignupSuccess
+        // let redirectToSignupSuccess = this.state.redirectToSignupSuccess
 
-        if (redirectToSignupSuccess === true) {
-            return (<Redirect to='/signupsuccess' push={true}/>)
-        }
+        // if (redirectToSignupSuccess === true) {
+        //     return (<Redirect to='/signupsuccess' push={true}/>)
+        // }
 
         return (
             <div>

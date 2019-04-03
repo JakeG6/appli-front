@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom
 import jwt_decode from 'jwt-decode';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-
+import LoadingSpinner from './LoadingSpinner.js'
 import NewTrackerDialog from './NewTrackerDialog.js';
 import TicketDialog from './TicketDialog/TicketDialog.js';
 import Ticket from './Ticket.js';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 
+import Fade from '@material-ui/core/Fade';
 import Switch from '@material-ui/core/Switch';
 
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +23,6 @@ import AddIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 
 class UserView extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -32,22 +32,18 @@ class UserView extends Component {
       currentUsername: '',
       userTickets: [],
       activeTicket: -1,
-      ticketDetails: ''
+      ticketDetails: '',
+      loading: false
     }
 
-    //this.addMostUpdatedTicket = this.addMostUpdatedTicket.bind(this)
     this.retrieveTickets = this.retrieveTickets.bind(this)
-
     this.handleClickOpen = this.handleClickOpen.bind(this)
     this.handleTicketOpen = this.handleTicketOpen.bind(this)
-
     this.handleClose = this.handleClose.bind(this)
     this.handleTicketClose = this.handleTicketClose.bind(this)
     this.handleSwitch = this.handleSwitch.bind(this)
     this.getUpdatedTicketDetails = this.getUpdatedTicketDetails.bind(this)
   }
-
-
 
   handleClickOpen() {
     this.setState({open: true})
@@ -68,37 +64,43 @@ class UserView extends Component {
 
   handleSwitch = name => event => {
     this.setState({ [name]: event.target.checked }, () => {
-      console.log(this.state.showArchived)
+      
       this.retrieveTickets();
     });
   };
 
   retrieveTickets = () => {
 
-    let apiEndpoint = ''
-    this.state.showArchived ? apiEndpoint = '/retrievetickets/showarchived' : apiEndpoint = '/retrievetickets/notarchived'
-  
-    return axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }}).then((tickets)=>{
-      //console.log(tickets.data)
-      let unsortedTickets = []
+    this.setState({loading: true}, () => {
+      let apiEndpoint = ''
+      this.state.showArchived ? apiEndpoint = '/retrievetickets/showarchived' : apiEndpoint = '/retrievetickets/notarchived'
+    
+      return axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }}).then((tickets)=>{
+        //console.log(tickets.data)
+        let unsortedTickets = []
 
-      // tickets.data.forEach(ticket => {
-      //   if (!ticket.archived)
-      // });
-      
-      let ticketsNewestToOldest = tickets.data.sort((a, b) => {
-        return new Date(b.date) - new Date(a.date)
-      })
+        // tickets.data.forEach(ticket => {
+        //   if (!ticket.archived)
+        // });
+        
+        let ticketsNewestToOldest = tickets.data.sort((a, b) => {
+          return new Date(b.date) - new Date(a.date)
+        })
 
-      console.log(ticketsNewestToOldest)
+        //console.log(ticketsNewestToOldest)
 
-      this.setState({userTickets: ticketsNewestToOldest})
-      //dispatch(getUsersData(data));
-    }).catch((error)=>{
-      console.log('error ', error);
-      localStorage.removeItem('jwtToken')
-      this.props.history.push('/')
-    });
+        this.setState({loading: false, userTickets: ticketsNewestToOldest})
+        //dispatch(getUsersData(data));
+      }).catch((error)=>{
+        console.log('error ', error);
+        localStorage.removeItem('jwtToken')
+        this.props.history.push('/')
+      });
+    })
+                 
+
+    
+ 
   }
 
   ///get updated ticket details immediately after updating the db and retrieving tickets (aaaaaargh!)
@@ -156,17 +158,26 @@ class UserView extends Component {
           </AppBar>   
 
           <div className="ticket-tray" style={{ padding: 8 }}>
-            {(this.state.userTickets.length > 1) ?
-              <Grid container spacing={16} direction="row" justify="center" alignItems="center">
-                {this.state.userTickets.map((ticket, index) =>
-
-                  <Grid  key={index.toString()} item xs={6} sm={3} md={2} onClick={()=>this.handleTicketOpen(ticket, index)}>
-                    <Ticket ticket={ticket}  />
-                  </Grid>  
-                )}
-              </Grid>
+            {
+              this.state.loading ? LoadingSpinner()
               :
+              
+              (this.state.userTickets.length > 1) ?
+              <Fade in={this.state.userTickets}>
+                <Grid container spacing={16} direction="row" justify="center" alignItems="center">
+                  {this.state.userTickets.map((ticket, index) =>
+                    <Grid  key={index.toString()} item xs={6} sm={3} md={2} onClick={()=>this.handleTicketOpen(ticket, index)}>
+                      <Ticket ticket={ticket}  />
+                    </Grid>  
+                  )}
+                </Grid>
+              </Fade>
+              :
+              <Fade in={this.state.userTickets}>
               <p> You haven't made any job tickets yet.</p>
+              </Fade>
+              
+              
             }
             <Fab  onClick={this.handleClickOpen} style={fabStyle} >
               <AddIcon className={'green'}/>

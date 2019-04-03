@@ -72,6 +72,10 @@ a {
   text-align: center;
 }
 
+.ticket:hover {
+  cursor: pointer;
+}
+
 .ticket-tray {
   background-color: #F5F5F5;
   

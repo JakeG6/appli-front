@@ -9,20 +9,13 @@ import Button from '@material-ui/core/Button';
 import BuildIcon from '@material-ui/icons/Build';
 
 import Dialog from '@material-ui/core/Dialog';
-//import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
-// import TextField from '@material-ui/core/TextField';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import CloseIcon from '@material-ui/icons/Clear';
-
 import Grid from '@material-ui/core/Grid';
-//import FormControl from '@material-ui/core/FormControl';
-//import Switch from '@material-ui/core/Switch';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LoadingSpinner from './LoadingSpinner.js'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
@@ -39,7 +40,8 @@ class NewTrackerDialog extends Component {
       jobOffered: false,
       acceptedOffer: false,
       openArchiveAlert: false,
-      pleaseArchive: false
+      pleaseArchive: false,
+      loading: true
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSwitch = this.handleSwitch.bind(this)
@@ -149,6 +151,11 @@ class NewTrackerDialog extends Component {
       return (
         <div className="App" style={{ padding: 12 }}>
           <DialogTitle id="form-dialog-title">Create an Application Ticket</DialogTitle>
+          {/* {
+            this.state.loading ? {
+
+            }
+          } */}
 
           <form onSubmit={this.postTicket}>
             <Grid container spacing={24}>
