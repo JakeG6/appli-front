@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LoadingSpinner from './LoadingSpinner.js'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
@@ -118,7 +117,6 @@ class NewTrackerDialog extends Component {
         archived: value
       }
     }).then(response => {
-      //console.log("the ticket was posted.")
       return this.props.retrieveTickets()          
     }).then(response => {  
       this.props.handleClose()
@@ -128,22 +126,14 @@ class NewTrackerDialog extends Component {
   }
 
   componentDidMount() {
-  
-      if (localStorage.getItem('jwtToken')) {
-        let decoded = jwt_decode(localStorage.getItem('jwtToken'))
-        console.log(decoded)
-        this.setState({userId: decoded.id}, () => {
-          console.log(`new tickets will go to ${this.state.userId}`)
-
-        })
-        
-      }
-      else {
-        this.props.history.push('/')
-      }
-      
-    
-    
+    if (localStorage.getItem('jwtToken')) {
+      let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+      //console.log(decoded)
+      this.setState({userId: decoded.id})       
+    }
+    else {
+      this.props.history.push('/')
+    }  
   }
 
   render() {
@@ -266,20 +256,17 @@ class NewTrackerDialog extends Component {
                     />
                   </Grid>
                 : null}
-              <Grid item xs={12}>
-                <Grid container spacing={8} justify="center">
-                  <Grid item xs={3} >
-                    < Button variant="contained" label="submit" type="Submit">
-                      Create
-                    </Button>
-                  </Grid>
-                  <Grid item xs={3} >
+                <DialogContent>
+                  <DialogActions>                    
                     <Button variant="contained" onClick={this.props.cancel}>
                       Cancel
                     </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
+                    < Button variant="contained" label="submit" type="Submit">
+                      Create
+                    </Button>
+                  </DialogActions>
+                </DialogContent>
+             
             </Grid>
             <Dialog open={this.state.openArchiveAlert}>
               <DialogTitle>{"You've Accepted the Job Offer"}</DialogTitle>

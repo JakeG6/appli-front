@@ -47,18 +47,18 @@ class Home extends Component {
 
     checkUniqueUsername(username) {
         return axios.get(`/checkuniquename/${username}`)
-            .then((response) => {
-                if (response.data === false) {
-                    this.setState({registrationMessage: "Sorry, but that username is taken"})
-                    return false
-                }
-                else {
-                    return true
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        .then((response) => {
+            if (response.data === false) {
+                this.setState({registrationMessage: "Sorry, but that username is taken"})
+                return false
+            }
+            else {
+                return true
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     handleLogin = event => {
@@ -156,7 +156,7 @@ class Home extends Component {
                         <Grid item xs={2} >
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="component-simple">Password</InputLabel>
-                                <Input id="component-simple" autoComplete='off' value={this.state.password} onChange={this.handleChange('password')} />
+                                <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>

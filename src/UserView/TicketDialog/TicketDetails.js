@@ -79,7 +79,7 @@ class TicketDetails extends Component {
                         <h3>Resume Used</h3>
                         {this.props.ticket.resume_link ?
                             <div>
-                                <a href={this.props.ticket.resume_link} style={linkStyle}>Link</a>
+                                <a href={this.props.ticket.resume_link} style={linkStyle}>LINK</a>
                             </div>
                         :
                             <div>

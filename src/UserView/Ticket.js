@@ -36,22 +36,33 @@ class Ticket extends Component {
     render() {
       const styles = {
           //maxWidth: '300px',
-          height: '300px',
-          backgroundColor: 'rgb(54, 193, 54)',    
-            color: 'white'        
+          card: {
+            height: '300px',
+            backgroundColor: 'rgb(54, 193, 54)',    
+            color: 'white'
+          },
+          root: {
+            
+            color: 'white'
+          },
+          cardContent: {
+            svg: {
+              color: 'white'
+            }
+            
+          }
+                  
       }
       
       return (
-        <Card className={'ticket'} style={styles}>
+        <Card className={'ticket'} style={styles.card}>
           <CardHeader 
-            
+            style={styles.cardHeader}
             title={this.props.ticket.company}
             subheader={this.props.ticket.position}
           />
           <CardContent>
             {applicationProgress(this.props.ticket)}
-            {/* <FontAwesomeIcon icon="handshake" color="black" size="7x" />
-            <p>JOB ACCEPTED!</p>          */}
           </CardContent>
         </Card>
       )

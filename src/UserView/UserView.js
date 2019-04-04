@@ -1,41 +1,52 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 import LoadingSpinner from './LoadingSpinner.js'
 import NewTrackerDialog from './NewTrackerDialog.js';
-import TicketDialog from './TicketDialog/TicketDialog.js';
 import Ticket from './Ticket.js';
+import TicketDialog from './TicketDialog/TicketDialog.js';
+
+
 import lightGreen from '@material-ui/core/colors/lightGreen';
 
-import Fade from '@material-ui/core/Fade';
-import Switch from '@material-ui/core/Switch';
 
-import Grid from '@material-ui/core/Grid';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Dialog from '@material-ui/core/Dialog';
-
-import Button from '@material-ui/core/Button';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import axios from 'axios';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import Fab from '@material-ui/core/Fab';
+import Fade from '@material-ui/core/Fade';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Switch from '@material-ui/core/Switch';
+import Toolbar from '@material-ui/core/Toolbar';
+
+
 
 class UserView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false,
-      openTicket: false,
-      showArchived: false,
-      currentUsername: '',
-      userTickets: [],
       activeTicket: -1,
+      anchorEl: null,
+      currentUsername: '',
+      sortOrder: 'newToOld',
+      loading: false,
+      open: false,
+      openTicket: false,     
+      showArchived: false,
+      sortMenu: false,
       ticketDetails: '',
-      loading: false
+      userTickets: []
+  
     }
-
+    this.sortMenuClose = this.sortMenuClose.bind(this)
+    this.sortMenuOpen = this.sortMenuOpen.bind(this)
     this.retrieveTickets = this.retrieveTickets.bind(this)
     this.handleClickOpen = this.handleClickOpen.bind(this)
     this.handleTicketOpen = this.handleTicketOpen.bind(this)
@@ -49,13 +60,33 @@ class UserView extends Component {
     this.setState({open: true})
   }
 
-  handleTicketOpen(ticket, index) {
-    this.setState({ticketDetails: ticket, activeTicket: index, openTicket: true}, () => {
-    })
-  }
-
   handleClose() {
     this.setState({open: false})
+  }
+
+  sortMenuClose(sortOrder) {
+  
+    if (sortOrder === 'newToOld' || sortOrder === 'oldToNew') {
+      sortOrder === this.state.sortOrder ? this.setState({anchorEl: null})
+      :
+    this.setState({anchorEl: null, sortOrder: sortOrder}, () => {
+      this.retrieveTickets()
+      })
+    }
+    else { 
+      this.setState({anchorEl: null})
+    }
+    
+  }
+
+  sortMenuOpen = (event) => {
+    this.setState({anchorEl: event.currentTarget})
+  }
+
+  handleTicketOpen(ticket, index) {
+    this.setState({ticketDetails: ticket, activeTicket: index, openTicket: true}, () => {
+      console.log(this.state.activeTicket)
+    })
   }
 
   handleTicketClose() {
@@ -70,42 +101,41 @@ class UserView extends Component {
   };
 
   retrieveTickets = () => {
+    return this.setState({loading: true}, () => {
+      let apiEndpoint = ''     
+      this.state.showArchived ? apiEndpoint = '/retrievetickets/showarchived' 
+        : apiEndpoint = '/retrievetickets/notarchived'
+      return axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
+        .then((tickets)=>{
+          let ticketOrder = []
 
-    this.setState({loading: true}, () => {
-      let apiEndpoint = ''
-      this.state.showArchived ? apiEndpoint = '/retrievetickets/showarchived' : apiEndpoint = '/retrievetickets/notarchived'
-    
-      return axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }}).then((tickets)=>{
-        //console.log(tickets.data)
-        let unsortedTickets = []
+          this.state.sortOrder === 'newToOld' ?
+            //sort tickets from newest to oldest
+            ticketOrder = tickets.data.sort((a, b) => {
+              return new Date(b.creation_date) - new Date(a.creation_date)
+            })
+          :
+            //sort tickets oldest to newest
+            ticketOrder = tickets.data.sort((a, b) => {
+              return new Date(a.creation_date) - new Date(b.creation_date)
+            })
+          
 
-        // tickets.data.forEach(ticket => {
-        //   if (!ticket.archived)
-        // });
-        
-        let ticketsNewestToOldest = tickets.data.sort((a, b) => {
-          return new Date(b.date) - new Date(a.date)
-        })
 
-        //console.log(ticketsNewestToOldest)
-
-        this.setState({loading: false, userTickets: ticketsNewestToOldest})
-        //dispatch(getUsersData(data));
+        this.setState({loading: false, userTickets: ticketOrder})
       }).catch((error)=>{
         console.log('error ', error);
         localStorage.removeItem('jwtToken')
         this.props.history.push('/')
       });
     })
-                 
-
-    
- 
   }
 
   ///get updated ticket details immediately after updating the db and retrieving tickets (aaaaaargh!)
   getUpdatedTicketDetails = () => {
-    return this.setState({ticketDetails: this.state.userTickets[this.state.activeTicket]  })
+    return this.setState({ticketDetails: this.state.userTickets[this.state.activeTicket]}, () => {
+      console.log(this.state.ticketDetails)
+     })
   }
 
   componentDidMount() {
@@ -117,23 +147,38 @@ class UserView extends Component {
     else {
       localStorage.removeItem('jwtToken')
       this.props.history.push('/')
-    }
-    
+    }    
   }
 
   render() {
 
     const primary = lightGreen.A400;
-    const fabStyle = {
-      color: 'white',
-      backgroundColor: 'rgb(54, 193, 54)',
-      position: 'fixed',
-      display: 'block',
-      bottom: '20px',
-      right: '20px'
+    const styles = {
+      fabStyle: {
+        color: 'white',
+        backgroundColor: 'rgb(54, 193, 54)',
+        position: 'fixed',
+        display: 'block',
+        bottom: '20px',
+        right: '20px'
+      },
+      username: {
+        marginLeft: '1em'
+      },
+      grow: {
+        flexGrow: 1
+      },
+      grow2: {
+        flexGrow: 2
+      },
+      displayOption:{
+        marginLeft: '1em',
+        marginRight: '1em'
+      }
     }
     
-       
+    const { anchorEl } = this.state;
+          
     //decode the jwt's payload.
     let decoded = jwt_decode(localStorage.getItem('jwtToken'))
     //get the current time
@@ -143,25 +188,47 @@ class UserView extends Component {
     if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) { 
       
       return (
-        <div className="App">
+        <div className="App">       
           <AppBar position="static" >
             <Toolbar color={primary} className="green">
-              <Button className="white-text" onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-              <p>Hello {this.state.currentUsername}</p>
+              <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
+              <p style={styles.username}>Hello {this.state.currentUsername}</p>
+              <div style={styles.grow}/>     
               <FormControlLabel control={
                 <Switch checked={this.state.showArchived} onChange={this.handleSwitch('showArchived')} value="showArchived" />                   
               }
+              labelPlacement="start"
               label="Show Archived Tickets"
+              style={styles.displayOption}
               />
+              
+              <Button
+                style={styles.displayOption}
+                                
+                aria-owns={anchorEl ? "sort-form" : null}
+                aria-haspopup="true"
+                onClick={this.sortMenuOpen}
+              >
+                Sort By
+              </Button>
+              <Menu 
+                id="sort-form" 
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.sortMenuClose}
+              >
+                <MenuItem >Sort By</MenuItem>
+                <MenuItem onClick={() => this.sortMenuClose("newToOld")}>Newest to Oldest</MenuItem>
+                <MenuItem onClick={() => this.sortMenuClose("oldToNew")}>Oldest to Newest</MenuItem>                               
+              </Menu>             
+              <div style={styles.grow}/>             
               <h1 className="green userview-logo">APPLi</h1>         
             </Toolbar>
           </AppBar>   
-
           <div className="ticket-tray" style={{ padding: 8 }}>
             {
               this.state.loading ? LoadingSpinner()
-              :
-              
+              :             
               (this.state.userTickets.length > 1) ?
               <Fade in={this.state.userTickets}>
                 <Grid container spacing={16} direction="row" justify="center" alignItems="center">
@@ -176,10 +243,8 @@ class UserView extends Component {
               <Fade in={this.state.userTickets}>
               <p> You haven't made any job tickets yet.</p>
               </Fade>
-              
-              
             }
-            <Fab  onClick={this.handleClickOpen} style={fabStyle} >
+            <Fab  onClick={this.handleClickOpen} style={styles.fabStyle} >
               <AddIcon className={'green'}/>
             </Fab>
           </div>
@@ -187,7 +252,8 @@ class UserView extends Component {
           {/* new ticket Form */}
           <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
             <NewTrackerDialog currentUsername={'yes'} cancel={this.handleClose} 
-            handleClose={this.handleClose} retrieveTickets={this.retrieveTickets}/>
+            handleClose={this.handleClose} retrieveTickets={this.retrieveTickets}
+            />
           </Dialog>
 
           {/* view ticket details */}
@@ -196,8 +262,6 @@ class UserView extends Component {
               ticket={this.state.ticketDetails} retrieveTickets={this.retrieveTickets}
               getUpdatedTicketDetails = {this.getUpdatedTicketDetails} showArchived={this.state.showArchived} />
           </Dialog>
-
-          
        </div>
       );
     }

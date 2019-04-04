@@ -68,27 +68,18 @@ class EditTicket extends Component {
                 "Authorization": "Bearer " + localStorage.getItem('jwtToken')                 
             }            
         })
-        .then(response => {
-            if (this.props.showArchived) {
-
-                this.props.retrieveTickets().then(response => {
-                    this.props.getUpdatedTicketDetails().then(response => {
-                        this.props.toggleEditDisplay()
-                    })
-                    
-                }).catch(error => {
-                    console.log(error)
-                });
-            }
-            else {
-                this.props.retrieveTickets().then(response => {
-                    this.props.handleTicketClose()
-
-                }).catch(error => {
-                    console.log(error)
-                });
-            }
             
+        .then(response => {
+            console.log('retrieving tickets')
+             this.props.retrieveTickets()
+        })
+        .then(response => {
+            console.log('getting updated ticketdetails')
+            return this.props.getUpdatedTicketDetails()
+        })
+        .then(response => {
+            console.log('toggling the edit display')
+            this.props.toggleEditDisplay()                
         })
         .catch(error => {
             console.log(error)
@@ -96,7 +87,6 @@ class EditTicket extends Component {
     }
 
     render() {
-        
         return (
             <div>
                 <form onSubmit={this.updateTicket}>
@@ -235,12 +225,9 @@ class EditTicket extends Component {
                                 </Grid>
                             </Grid>                                                       
                         </Grid>
-                    </Grid>
-                               
+                    </Grid>                               
                 </form>
-                
-                
-            </div>
+             </div>
         )
     }
 

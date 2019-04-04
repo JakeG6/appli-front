@@ -85,6 +85,10 @@ a {
   padding-right:5px;
 }
 
+.white-text {
+  color: white
+}
+
 .blue {
   background-color: blue;
 }
