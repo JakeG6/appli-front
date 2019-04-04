@@ -47,6 +47,7 @@ class App extends Component {
             <Route exact path="/inner" render={(props) => 
               <UserView  handleLogout={this.handleLogout} {...props} />
             }/>
+            
           </div>        
         </Router>
       // </MuiThemeProvider>
