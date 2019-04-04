@@ -40,6 +40,13 @@ a {
   letter-spacing: 3px;
 }
 
+.userview-logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 200%;
+  letter-spacing: 3px;
+  margin: 0em 1em;
+}
+
 
 
 .login-message {
@@ -57,13 +64,29 @@ a {
   align-items: center;
 }
 
-
 .red {
   background-color: red;
 }
 
 .registration-popup {
   text-align: center;
+}
+
+.ticket:hover {
+  cursor: pointer;
+}
+
+.ticket-tray {
+  background-color: #F5F5F5;
+  
+  height: 79vh;
+  
+  padding-left:5px;
+  padding-right:5px;
+}
+
+.white-text {
+  color: white
 }
 
 .blue {
@@ -77,4 +100,8 @@ a {
 .App-link {
   color: #61dafb;
 }
+
+
+
+
 

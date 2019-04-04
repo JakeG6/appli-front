@@ -7,8 +7,9 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Dialog from '@material-ui/core/Dialog';
 
+import jwt_decode from 'jwt-decode';
 
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as  Redirect } from "react-router-dom";
 
 class Home extends Component {
 
@@ -45,45 +46,42 @@ class Home extends Component {
     };
 
     checkUniqueUsername(username) {
-        return axios.get(`http://localhost:4242/checkuniquename/${username}`)
-            .then((response) => {
-                if (response.data === false) {
-                    this.setState({registrationMessage: "Sorry, but that username is taken"})
-                    return false
-                }
-                else {
-                    return true
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        return axios.get(`/checkuniquename/${username}`)
+        .then((response) => {
+            if (response.data === false) {
+                this.setState({registrationMessage: "Sorry, but that username is taken"})
+                return false
+            }
+            else {
+                return true
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     handleLogin = event => {
+        event.preventDefault();
 
         //Make a network call somewhere
-        axios.get(`http://localhost:4242/login?username="${this.state.name}"&password="${this.state.password}"`)
+        axios.post(`/login`, {
+            username: this.state.name,
+            password: this.state.password
+        })
+        
+        //?username="${this.state.name}"&password="${this.state.password}"`)
         .then((response) => {
-            //console.log(response)
-            if (response.data !== false) {
-                    console.log("good job")
-                        this.props.setCurrentUser(response)
-                        console.log(this.props.currentUser)
-                        //localStorage.setItem("authorized", "true")
-                        //localStorage.setItem("currentUser", this.state)
-                        this.props.history.push('/inner')
-            }
-            else {
-                this.setState({loginMessage: "Login failed: wrong username or password"})
-            }
+
+            localStorage.setItem('jwtToken', response.data.token)
+            this.props.history.push('/inner')
+            
         })
         .catch( (error) => {
             console.log(error);
-            this.setState({loginMessage: "There is an error with the server. please try again later"})
-        });
+            this.setState({loginMessage: "There is an error with the server. please try again later."})
+        })
 
-        event.preventDefault();
     }
 
     handleRegistration = event => {
@@ -94,24 +92,20 @@ class Home extends Component {
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
-                console.log(isUnique)
 
                 if (isUnique === true) {
-                    //console.log("the username is unique")
-                    axios.post('http://localhost:4242/createuser', {
+                    axios.post('/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                         })
                         .then( (response) => {
                            
-                            console.log(response)
                             this.setState({redirectToSignupSuccess: true}, () => {
-                                console.log(this.state.redirectToSignupSuccess)
+                                this.props.history.push('/signupsuccess')
 
                                 
                             })
                             
-                            //this.props.history.push('/signupsuccess')
                         })
                         .catch((error) => {
                             console.log(error);
@@ -125,17 +119,25 @@ class Home extends Component {
     }
 
     render() {
-        let isAuthed = localStorage.getItem("authorized");
+        
+        if (localStorage.getItem("jwtToken")) {
+            //decode the jwt's payload.
+            let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+            //get the current time
+            let currentTime = Math.floor(Date.now() / 1000)
 
-        let redirectToSignupSuccess = this.state.redirectToSignupSuccess
-
-        if (isAuthed === "true") {
-            return (<Redirect to='/inner' />)
+            //if the current time on rendering is earlier than the expiration date, show the page.
+            if (currentTime < decoded.exp) {
+                return (<Redirect to='/inner' />)
+            }
+            else {}
         }
 
-        if (redirectToSignupSuccess === true) {
-            return (<Redirect to='/signupsuccess' push={true}/>)
-        }
+        // let redirectToSignupSuccess = this.state.redirectToSignupSuccess
+
+        // if (redirectToSignupSuccess === true) {
+        //     return (<Redirect to='/signupsuccess' push={true}/>)
+        // }
 
         return (
             <div>
@@ -154,7 +156,7 @@ class Home extends Component {
                         <Grid item xs={2} >
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="component-simple">Password</InputLabel>
-                                <Input id="component-simple" autoComplete='off' value={this.state.password} onChange={this.handleChange('password')} />
+                                <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
@@ -162,6 +164,7 @@ class Home extends Component {
                         </Grid>
                     </Grid>
                 </form>
+
                 <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
 
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">
