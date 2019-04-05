@@ -3,50 +3,40 @@ import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-
+import UserAppBar from './UserAppBar.js'
 import LoadingSpinner from './LoadingSpinner.js'
 import NewTrackerDialog from './NewTrackerDialog.js';
 import Ticket from './Ticket.js';
 import TicketDialog from './TicketDialog/TicketDialog.js';
 
-
 import lightGreen from '@material-ui/core/colors/lightGreen';
 
-
 import AddIcon from '@material-ui/icons/Add';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
 import Fade from '@material-ui/core/Fade';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Switch from '@material-ui/core/Switch';
-import Toolbar from '@material-ui/core/Toolbar';
-
-
 
 class UserView extends Component {
   constructor(props) {
     super(props)
     this.state = {
       activeTicket: -1,
-      anchorEl: null,
+      //anchorEl: null,
       currentUsername: '',
       sortOrder: 'newToOld',
       loading: false,
       open: false,
       openTicket: false,     
       showArchived: false,
-      sortMenu: false,
+      //sortMenu: false,
       ticketDetails: '',
       userTickets: []
   
     }
-    this.sortMenuClose = this.sortMenuClose.bind(this)
-    this.sortMenuOpen = this.sortMenuOpen.bind(this)
+    //this.sortMenuClose = this.sortMenuClose.bind(this)
+    //this.sortMenuOpen = this.sortMenuOpen.bind(this)
+    this.changeSortOrder = this.changeSortOrder.bind(this)
     this.retrieveTickets = this.retrieveTickets.bind(this)
     this.handleClickOpen = this.handleClickOpen.bind(this)
     this.handleTicketOpen = this.handleTicketOpen.bind(this)
@@ -56,31 +46,18 @@ class UserView extends Component {
     this.getUpdatedTicketDetails = this.getUpdatedTicketDetails.bind(this)
   }
 
+  changeSortOrder = newSortOrder => {
+    this.setState({sortOrder: newSortOrder}, () => {
+      this.retrieveTickets()
+    })
+  }
+
   handleClickOpen() {
     this.setState({open: true})
   }
 
   handleClose() {
     this.setState({open: false})
-  }
-
-  sortMenuClose(sortOrder) {
-  
-    if (sortOrder === 'newToOld' || sortOrder === 'oldToNew') {
-      sortOrder === this.state.sortOrder ? this.setState({anchorEl: null})
-      :
-    this.setState({anchorEl: null, sortOrder: sortOrder}, () => {
-      this.retrieveTickets()
-      })
-    }
-    else { 
-      this.setState({anchorEl: null})
-    }
-    
-  }
-
-  sortMenuOpen = (event) => {
-    this.setState({anchorEl: event.currentTarget})
   }
 
   handleTicketOpen(ticket, index) {
@@ -120,10 +97,8 @@ class UserView extends Component {
               return new Date(a.creation_date) - new Date(b.creation_date)
             })
           
-
-
         this.setState({loading: false, userTickets: ticketOrder}, () => {
-          console.log('userview reloaded')
+          //console.log('userview reloaded')
         })
         this.getUpdatedTicketDetails()
       }).catch((error)=>{
@@ -137,7 +112,7 @@ class UserView extends Component {
   ///get updated ticket details immediately after updating the db and retrieving tickets (aaaaaargh!)
   getUpdatedTicketDetails = () => {
     return this.setState({ticketDetails: this.state.userTickets[this.state.activeTicket]}, () => {
-      console.log(this.state.ticketDetails)
+      //console.log(this.state.ticketDetails)
      })
   }
 
@@ -179,55 +154,26 @@ class UserView extends Component {
         marginRight: '1em'
       }
     }
-    
-    const { anchorEl } = this.state;
-          
+       
     //decode the jwt's payload.
     let decoded = jwt_decode(localStorage.getItem('jwtToken'))
     //get the current time
     let currentTime = Math.floor(Date.now() / 1000)
 
     //if the current time on rendering is earlier than the expiration date, show the page.
-    if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) { 
+    if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) {       
       
       return (
-        <div className="App">       
-          <AppBar position="static" >
-            <Toolbar color={primary} className="green">
-              <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-              <p style={styles.username}>Hello {this.state.currentUsername}</p>
-              <div style={styles.grow}/>     
-              <FormControlLabel control={
-                <Switch checked={this.state.showArchived} onChange={this.handleSwitch('showArchived')} value="showArchived" />                   
-              }
-              labelPlacement="start"
-              label="Show Archived Tickets"
-              style={styles.displayOption}
-              />
-              
-              <Button
-                style={styles.displayOption}
-                                
-                aria-owns={anchorEl ? "sort-form" : null}
-                aria-haspopup="true"
-                onClick={this.sortMenuOpen}
-              >
-                Sort By
-              </Button>
-              <Menu 
-                id="sort-form" 
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={this.sortMenuClose}
-              >
-                <MenuItem >Sort By</MenuItem>
-                <MenuItem onClick={() => this.sortMenuClose("newToOld")}>Newest to Oldest</MenuItem>
-                <MenuItem onClick={() => this.sortMenuClose("oldToNew")}>Oldest to Newest</MenuItem>                               
-              </Menu>             
-              <div style={styles.grow}/>             
-              <h1 className="green userview-logo">APPLi</h1>         
-            </Toolbar>
-          </AppBar>   
+        <div className="App">   
+          <UserAppBar
+            changeSortOrder={this.changeSortOrder}
+            handleLogout={this.props.handleLogout}
+            currentUsername={this.state.currentUsername}
+            retrieveTickets={this.retrieveTickets}
+            showArchived={this.state.showArchived}
+            sortOrder={this.state.sortOrder}
+            handleSwitch={this.handleSwitch}  
+          /> 
           <div className="ticket-tray" style={{ padding: 8 }}>
             {
               this.state.loading ? LoadingSpinner()
@@ -274,7 +220,6 @@ class UserView extends Component {
     }
 
   }
-
 }
 
 export default UserView;

@@ -80,14 +80,10 @@ class EditTicket extends Component {
             console.log('getting updated ticketdetails')
             // return this.props.getUpdatedTicketDetails()
         })
-        // .then(response => {
-        //     console.log('toggling the edit display')
-        //     this.props.toggleEditDisplay()                
-        // })
         .catch(error => {
             console.log(error)
         });
-        //this.props.toggleEditDisplay()
+        
         this.props.handleTicketClose()
     }
 
