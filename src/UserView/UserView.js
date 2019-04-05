@@ -101,11 +101,11 @@ class UserView extends Component {
   };
 
   retrieveTickets = () => {
-    return this.setState({loading: true}, () => {
+    this.setState({loading: true}, () => {
       let apiEndpoint = ''     
       this.state.showArchived ? apiEndpoint = '/retrievetickets/showarchived' 
         : apiEndpoint = '/retrievetickets/notarchived'
-      return axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
+        axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
         .then((tickets)=>{
           let ticketOrder = []
 
@@ -122,7 +122,10 @@ class UserView extends Component {
           
 
 
-        this.setState({loading: false, userTickets: ticketOrder})
+        this.setState({loading: false, userTickets: ticketOrder}, () => {
+          console.log('userview reloaded')
+        })
+        this.getUpdatedTicketDetails()
       }).catch((error)=>{
         console.log('error ', error);
         localStorage.removeItem('jwtToken')

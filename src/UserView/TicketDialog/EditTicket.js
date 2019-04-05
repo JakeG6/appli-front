@@ -42,14 +42,17 @@ class EditTicket extends Component {
     }
 
     handleSwitch = name => event => {
+        if (name === 'jobOffered') {
+            this.setState({acceptedOffer: false})
+          }
         this.setState({ [name]: event.target.checked }, () => {
             console.log('this.state.archived: ', this.state.archived)
         });
     }
 
-    updateTicket = (event) => {
+    updateTicket = async (event) => {
         event.preventDefault();
-        axios({
+        await axios({
             method: 'put',
             url: `http://localhost:4242/updateticket/${this.state.ticketId}`,
             data: {
@@ -69,21 +72,23 @@ class EditTicket extends Component {
             }            
         })
             
-        .then(response => {
+        .then(async response => {
             console.log('retrieving tickets')
-             this.props.retrieveTickets()
+            await this.props.retrieveTickets()
         })
         .then(response => {
             console.log('getting updated ticketdetails')
-            return this.props.getUpdatedTicketDetails()
+            // return this.props.getUpdatedTicketDetails()
         })
-        .then(response => {
-            console.log('toggling the edit display')
-            this.props.toggleEditDisplay()                
-        })
+        // .then(response => {
+        //     console.log('toggling the edit display')
+        //     this.props.toggleEditDisplay()                
+        // })
         .catch(error => {
             console.log(error)
         });
+        //this.props.toggleEditDisplay()
+        this.props.handleTicketClose()
     }
 
     render() {

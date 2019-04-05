@@ -53,7 +53,11 @@ class NewTrackerDialog extends Component {
   };
 
   handleSwitch = name => event => {
+    if (name === 'jobOffered') {
+      this.setState({acceptedOffer: false})
+    }
     this.setState({ [name]: event.target.checked });
+    
   };
 
   postTicket = event => {
@@ -176,7 +180,7 @@ class NewTrackerDialog extends Component {
                     <TextField
                       label="Resume"
                       value={this.state.resumeLink}
-                      placeholder="A Link to Your Resume"
+                      placeholder="Full Link to Resume"
                       onChange={this.handleChange('resumeLink')}
                       variant="filled"
                     />     
