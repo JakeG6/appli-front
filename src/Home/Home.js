@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
@@ -79,7 +84,7 @@ class Home extends Component {
         })
         .catch( (error) => {
             console.log(error);
-            this.setState({loginMessage: "There is an error with the server. please try again later."})
+            this.setState({loginMessage: "Sorry. Your username or password is incorrect."})
         })
 
     }
@@ -92,20 +97,15 @@ class Home extends Component {
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
-
                 if (isUnique === true) {
                     axios.post('/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                         })
-                        .then( (response) => {
-                           
+                        .then( (response) => {                          
                             this.setState({redirectToSignupSuccess: true}, () => {
-                                this.props.history.push('/signupsuccess')
-
-                                
-                            })
-                            
+                                this.props.history.push('/signupsuccess') 
+                            })                           
                         })
                         .catch((error) => {
                             console.log(error);
@@ -119,6 +119,14 @@ class Home extends Component {
     }
 
     render() {
+
+        const style={
+            loginCard: {
+                maxWidth: '50%',
+                margin: '0 auto',
+                padding: '1em'
+            }
+        }
         
         if (localStorage.getItem("jwtToken")) {
             //decode the jwt's payload.
@@ -133,40 +141,34 @@ class Home extends Component {
             else {}
         }
 
-        // let redirectToSignupSuccess = this.state.redirectToSignupSuccess
-
-        // if (redirectToSignupSuccess === true) {
-        //     return (<Redirect to='/signupsuccess' push={true}/>)
-        // }
-
         return (
             <div>
                 <h1 className="green home-logo">APPLi</h1>
-                <div className="login-message">
-                    <h4>{this.state.loginMessage}</h4>
-                </div>
-                <form onSubmit={this.handleLogin} style={{ padding: 8 }}>
-                    <Grid container spacing={16} direction="row" justify="center">
-                        <Grid item xs={2} >
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="component-simple">Name</InputLabel>
-                                <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
-                            </FormControl>
+                <Card style={style.loginCard}>
+                    <div className="login-message">
+                        <h4>{this.state.loginMessage}</h4>
+                    </div>
+                    <form onSubmit={this.handleLogin} style={{ padding: 8 }}>
+                        <Grid container spacing={16} direction="row" justify="center">
+                            <Grid item xs={6} >
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Name</InputLabel>
+                                    <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={6} >
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Password</InputLabel>
+                                    <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button  color="secondary" label="submit" type="Submit" variant="contained" >Log In</Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={2} >
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="component-simple">Password</InputLabel>
-                                <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button  color="secondary" label="submit" type="Submit" variant="contained" >Log In</Button>
-                        </Grid>
-                    </Grid>
-                </form>
-
-                <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
-
+                    </form>
+                    <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
+                </Card>
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">
                     <h2>Register for an Account</h2>
                     <form onSubmit={this.handleRegistration} style={{ padding: 8 }}>
@@ -189,7 +191,7 @@ class Home extends Component {
                             </Grid>
                         </Grid>
                     </form>
-                </Dialog>   
+                </Dialog>                 
             </div>
         )
     }

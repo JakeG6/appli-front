@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
+
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
+
 import Toolbar from '@material-ui/core/Toolbar';
 
 class UserAppBar extends Component {
@@ -67,6 +69,7 @@ class UserAppBar extends Component {
                 <AppBar position="static" >
                     <Toolbar  className="green">
                         <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
+                        <Button><Link to="/inner/settings">User Settings</Link></Button>
                         <p style={styles.username}>Hello {this.props.currentUsername}</p>
                         <div style={styles.grow}/>     
                         <FormControlLabel control={

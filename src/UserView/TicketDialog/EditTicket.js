@@ -217,8 +217,7 @@ class EditTicket extends Component {
                                     <DialogActions>
                                         <Button variant="contained" onClick={this.props.toggleEditDisplay}>
                                             Cancel
-                                        </Button>
-                                
+                                        </Button>                               
                                         <Button variant="contained" color="primary" label="submit" type="Submit">
                                             Save 
                                         </Button>
