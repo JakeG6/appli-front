@@ -55,7 +55,7 @@ class Ticket extends Component {
       }
       
       return (
-        <Card className={'ticket'} style={styles.card}>
+        <Card className={'ticket'} style={styles.card} color="primary">
           <CardHeader 
             style={styles.cardHeader}
             title={this.props.ticket.company}

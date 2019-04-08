@@ -22,14 +22,12 @@ class UserView extends Component {
     super(props)
     this.state = {
       activeTicket: -1,
-      //anchorEl: null,
       currentUsername: '',
       sortOrder: 'newToOld',
       loading: false,
       open: false,
       openTicket: false,     
       showArchived: false,
-      //sortMenu: false,
       ticketDetails: '',
       userTickets: []
   

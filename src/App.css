@@ -55,14 +55,10 @@ html, body {
   margin: 0em 1em;
 }
 
-
-
 .login-message {
   height: 2em;
   color: red;
 }
-
-
 
 .portfolioBar {
   width: 100%;
@@ -109,7 +105,11 @@ html, body {
   color: #61dafb;
 }
 
-
+@media only screen and (max-width: 600px) {
+  .userview-logo {
+    display: none
+  }
+}
 
 
 

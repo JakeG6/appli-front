@@ -6,6 +6,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
+
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 
@@ -17,11 +19,19 @@ class UserAppBar extends Component {
         super(props)
         this.state= {
             anchorEl: null,
+            userMenuEl: null,
             sortMenu: false,
+            userMenu: false,
         }
 
         this.sortMenuClose = this.sortMenuClose.bind(this)
         this.sortMenuOpen = this.sortMenuOpen.bind(this)
+        this.userMenuClose = this.userMenuClose.bind(this)
+        this.userMenuOpen = this.userMenuOpen.bind(this)
+    }
+
+    sortMenuOpen = (event) => {
+        this.setState({anchorEl: event.currentTarget})
     }
 
     sortMenuClose(newSortOrder) {
@@ -39,13 +49,19 @@ class UserAppBar extends Component {
             this.setState({anchorEl: null})
         }
     }
-    
-    sortMenuOpen = (event) => {
-    this.setState({anchorEl: event.currentTarget})
+
+    userMenuOpen = (event) => {
+        this.setState({userMenuEl: event.currentTarget})
     }
+    
+    userMenuClose() { 
+        this.setState({userMenuEl: null})
+    }
+    
+    
 
     render() {
-        const { anchorEl } = this.state;
+        const { anchorEl, userMenuEl } = this.state;
 
         const styles = {
             
@@ -68,9 +84,23 @@ class UserAppBar extends Component {
             <div>
                 <AppBar position="static" >
                     <Toolbar className="green">
-                        <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-                        <Button><Link to="/inner/settings">User Settings</Link></Button>
-                        <p style={styles.username}>Hello {this.props.currentUsername}</p>
+                        <MenuIcon 
+                            aria-owns={userMenuEl ? "user-menu" : null}
+                            aria-haspopup="true"
+                            onClick={this.userMenuOpen}
+                        />
+                        <Menu 
+                            id="user-menu" 
+                            anchorEl={userMenuEl}
+                            open={Boolean(userMenuEl)}
+                            onClose={this.userMenuClose}
+                        >
+                            <MenuItem onClick={this.userMenuClose}>{this.props.currentUsername}</MenuItem>
+                            <MenuItem onClick={this.userMenuClose}>an option</MenuItem>
+                            <MenuItem onClick={this.userMenuClose}>an option</MenuItem>
+                        </Menu>
+                        {/* <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
+                        <Button><Link to="/inner/settings">User Settings</Link></Button> */}
                         <div style={styles.grow}/>     
                         <FormControlLabel control={
                             <Switch checked={this.props.showArchived} onChange={this.props.handleSwitch('showArchived')} value="showArchived" />                   
