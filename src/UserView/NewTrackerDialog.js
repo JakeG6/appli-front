@@ -168,7 +168,8 @@ class NewTrackerDialog extends Component {
                   margin="normal"
                   variant="filled"
                 />                    
-              </Grid>             
+              </Grid>
+              <Grid item xs={12}>
                 <Grid container spacing={0}>
                   <Grid item xs={6}>
                     <TextField
@@ -192,9 +193,10 @@ class NewTrackerDialog extends Component {
                       label="Includes a Cover Letter?"
                       labelPlacement="start"
                     />
-                  </Grid> 
-                  
-              </Grid>
+                  </Grid>                   
+                </Grid>
+              </Grid>             
+              
               <Grid item xs={12}>
                 <TextField
                   id="filled-textarea"
@@ -206,8 +208,7 @@ class NewTrackerDialog extends Component {
                   variant="filled"
                 />
               </Grid>
-              <Grid item xs={12}>
-              
+              <Grid item xs={12}>             
                 <FormControlLabel
                   control={
                     <Switch
@@ -221,39 +222,38 @@ class NewTrackerDialog extends Component {
                   labelPlacement="start"
                 />
               </Grid>
-        
-                {this.state.calledForInterview ?
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={this.state.jobOffered}
-                          onChange={this.handleSwitch('jobOffered')}
-                          value="jobOffered"
-                          color="primary"
-                        />
-                      }
-                      label="Have I Been Offered the Position?"
-                      labelPlacement="start"
-                    />
-                  </Grid>
-                : null }         
-                {this.state.jobOffered && this.state.calledForInterview ?
-                  <Grid item xs={12}>
-                    <FormControlLabel
+              {this.state.calledForInterview ?
+                <Grid item xs={12}>
+                  <FormControlLabel
                     control={
                       <Switch
-                        checked={this.state.acceptedOffer}
-                        onChange={this.handleSwitch('acceptedOffer')}
-                        value="acceptedOffer"
+                        checked={this.state.jobOffered}
+                        onChange={this.handleSwitch('jobOffered')}
+                        value="jobOffered"
                         color="primary"
                       />
                     }
-                    label="Have I Accepted the Position?"
+                    label="Have I Been Offered the Position?"
                     labelPlacement="start"
+                  />
+                </Grid>
+              : null }         
+              {this.state.jobOffered && this.state.calledForInterview ?
+                <Grid item xs={12}>
+                  <FormControlLabel
+                  control={
+                    <Switch
+                      checked={this.state.acceptedOffer}
+                      onChange={this.handleSwitch('acceptedOffer')}
+                      value="acceptedOffer"
+                      color="primary"
                     />
-                  </Grid>
-                : null}
+                  }
+                  label="Have I Accepted the Position?"
+                  labelPlacement="start"
+                  />
+                </Grid>
+              : null}
                 <DialogContent>
                   <DialogActions>                    
                     <Button variant="contained" onClick={this.props.cancel}>
@@ -263,9 +263,9 @@ class NewTrackerDialog extends Component {
                       Create
                     </Button>
                   </DialogActions>
-                </DialogContent>
-             
+                </DialogContent>           
             </Grid>
+
             <Dialog open={this.state.openArchiveAlert}>
               <DialogTitle>{"You've Accepted the Job Offer"}</DialogTitle>
               <DialogContent>
