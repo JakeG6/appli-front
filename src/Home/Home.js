@@ -101,15 +101,15 @@ class Home extends Component {
                     axios.post('/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
-                        })
-                        .then( (response) => {                          
-                            this.setState({redirectToSignupSuccess: true}, () => {
-                                this.props.history.push('/signupsuccess') 
-                            })                           
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
+                    })
+                    .then( (response) => {                          
+                        this.setState({redirectToSignupSuccess: true}, () => {
+                            this.props.history.push('/signupsuccess') 
+                        })                           
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
                 }
             })
         }
@@ -138,7 +138,7 @@ class Home extends Component {
             if (currentTime < decoded.exp) {
                 return (<Redirect to='/inner' />)
             }
-            else {}
+            
         }
 
         return (

@@ -145,12 +145,6 @@ class NewTrackerDialog extends Component {
       return (
         <div className="App" style={{ padding: 12 }}>
           <DialogTitle id="form-dialog-title">Create an Application Ticket</DialogTitle>
-          {/* {
-            this.state.loading ? {
-
-            }
-          } */}
-
           <form onSubmit={this.postTicket}>
             <Grid container spacing={24}>
               <Grid item xs={6}>
@@ -275,8 +269,7 @@ class NewTrackerDialog extends Component {
             <Dialog open={this.state.openArchiveAlert}>
               <DialogTitle>{"You've Accepted the Job Offer"}</DialogTitle>
               <DialogContent>
-              <FontAwesomeIcon icon="handshake" color="black" size="7x" />
-
+                <FontAwesomeIcon icon="handshake" color="black" size="7x" />
                 <DialogContentText>
                   Congratulations! It appears that you've been hired for this job. Would you like to archive this job ticket?
                 </DialogContentText>

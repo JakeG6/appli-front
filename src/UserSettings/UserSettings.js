@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 import UserStyle from './UserStyle.js'
 import ChangePassword from './ChangePassword'
@@ -33,47 +34,53 @@ class UserSettings extends Component {
   
     render() {
 
-        const styles = {
-          background: {
-            backgroundColor: '#F5F5F5',
-            height: '89vh'
-          },
-          settingsCard: {
-            margin: '5em auto',
-            maxWidth: '50%'
-          },
-          username: {
-            marginLeft: '1em'
-          },
-          grow: {
-            flexGrow: 1
-          },
-          grow2: {
-            flexGrow: 2
-          },
-          displayOption:{
-            marginLeft: '1em',
-            marginRight: '1em'
-          },
-          tab: {
-            backgroundColor: 'rgb(54, 193, 54)',
-            color: 'white',
-            
-          }
+      const styles = {
+        background: {
+          backgroundColor: '#F5F5F5',
+          height: '89vh'
+        },
+        settingsCard: {
+          margin: '5em auto',
+          maxWidth: '50%'
+        },
+        username: {
+          marginLeft: '1em'
+        },
+        grow: {
+          flexGrow: 1
+        },
+        grow2: {
+          flexGrow: 2
+        },
+        displayOption:{
+          marginLeft: '1em',
+          marginRight: '1em'
+        },
+        tab: {
+          backgroundColor: 'rgb(54, 193, 54)',
+          color: 'white',
+          
         }
+      }
 
-          const { value } = this.state;
+      const { value } = this.state;
 
-        return(
+      let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+        //get the current time
+        let currentTime = Math.floor(Date.now() / 1000)
+
+        //if the current time on rendering is earlier than the expiration date, show the page.
+        if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) {
+          return(
             <div style={styles.background}>
               {/* Navigation Bar */}
                 <AppBar position="static" >
-                    <Toolbar className="green">
-                        <Button onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-                        <Button><Link to="/inner">My Job Tickets</Link></Button>                                 
-                        <div style={styles.grow}/>             
-                        <h1 className="green userview-logo">APPLi</h1>         
-                    </Toolbar>
+                  <Toolbar className="green">
+                    <Button onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
+                    <Button><Link to="/inner">My Job Tickets</Link></Button>                                 
+                    <div style={styles.grow}/>             
+                    <h1 className="green userview-logo">APPLi</h1>         
+                  </Toolbar>
                 </AppBar>
                 {/* Settings Card */}
                 <Card style={styles.settingsCard}>
@@ -88,12 +95,15 @@ class UserSettings extends Component {
                     <Tab label="Reset Password" style={styles.tab}  />
                   </Tabs>
                   <CardContent>
-                        {value === 0 && <UserStyle />}
-                        {value === 1 && <ChangePassword />}
+                    {value === 0 && <UserStyle />}
+                    {value === 1 && <ChangePassword />}
                   </CardContent>
                 </Card>
-            </div>
-        )
+              </div>
+          )
+        } else {
+          return (<Redirect to="/" />) 
+        }
     }
 
 }

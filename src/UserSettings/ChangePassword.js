@@ -1,32 +1,31 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+
+import LoadingSpinner from '../UserView/LoadingSpinner.js' 
+
+import Fade from '@material-ui/core/Fade';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Switch from '@material-ui/core/Switch';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Toolbar from '@material-ui/core/Toolbar';
+
 
 class ChangePassword extends Component {
     constructor(props) {
         super(props)
         this.state={
             oldPassword: '',
-            newPassword: ''
+            newPassword: '',
+            loading: false,
+            fading: true,
+            didUpdatePW: false,
+            incorrectPW: false
         }
-        //this.updatePassword = this.updatePassword.bind(this)
+        this.updatePassword = this.updatePassword.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -34,13 +33,62 @@ class ChangePassword extends Component {
         this.setState({ [name]: event.target.value });
       };
 
+    updatePassword = event => {
+        event.preventDefault();
+        let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+
+        this.setState({loading: true}, () => {
+            return axios({
+                method: 'put',
+                url: `http://localhost:4242/updatepassword`,
+                data: {
+                    oldPassword: this.state.oldPassword,
+                    newPassword: this.state.newPassword,
+                    username: decoded.name
+                },
+                headers: {                
+                    "Authorization": "Bearer " + localStorage.getItem('jwtToken')                 
+                }  
+                })
+                .then(response => {                          
+                    console.log(response)
+                    this.setState({loading: false, didUpdatePW: true})      
+                 })
+                .catch((error) => {
+                    console.log(error);
+                    this.setState({loading: false, incorrectPW: true}, () => {
+                        console.log(this.state.loading)
+                    })
+
+                }
+            );
+        }) 
+    }
+
     render() {
 
-        return(
+        let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+        //get the current time
+        let currentTime = Math.floor(Date.now() / 1000)
+
+        //if the current time on rendering is earlier than the expiration date, show the page.
+        if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) {
+            return(
             <div>
-                <h1>Change Your Password</h1>
-                <form onSubmit={this.updatePassword} style={{ padding: 8 }}>
-                    <Grid container>
+            {
+                this.state.loading ? 
+                LoadingSpinner()
+                :
+                this.state.didUpdatePW ?
+                <Fade in={this.state.didUpdatePW}>
+                    <h1>Your Password Has Been Updated</h1>
+                </Fade>
+                :
+                <div>
+                    
+                <h1>{this.state.incorrectPW ? "Error: Incorrect Password" : "Change Your Password"}</h1>
+                <form onSubmit={this.updatePassword} style={{ padding: 8 }}>                    
+                    <Grid container spacing={16}>
                         <Grid item xs={6}>
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="component-simple">Current Password</InputLabel>
@@ -57,15 +105,19 @@ class ChangePassword extends Component {
                                 onChange={this.handleChange('newPassword')} />
                             </FormControl>
                         </Grid>
-                    </Grid>                
-                </form>  
-                        
-                <Button type="Submit" color="secondary" variant="contained" label="create">Submit</Button>
-                        
-                                       
+                        <Grid item xs={12}>
+                            <Button type="Submit" color="secondary" variant="contained" label="create">Submit</Button> 
+                        </Grid>
+                    </Grid>                                                   
+                </form>
+                
+                </div>
+            }
             </div>
-
-        ) 
+        )} //otherwise, send the user to the login page.
+        else { 
+          return (<Redirect to="/" />) 
+        } 
     }
 }
 

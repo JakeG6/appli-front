@@ -67,7 +67,7 @@ class UserAppBar extends Component {
         return (
             <div>
                 <AppBar position="static" >
-                    <Toolbar  className="green">
+                    <Toolbar className="green">
                         <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
                         <Button><Link to="/inner/settings">User Settings</Link></Button>
                         <p style={styles.username}>Hello {this.props.currentUsername}</p>
