@@ -101,8 +101,13 @@ html, body {
   background-color: rgb(54, 193, 54)
 }
 
+
 .App-link {
   color: #61dafb;
+}
+
+.userbar-link {
+  color: rgba(0, 0, 0, 0.87)
 }
 
 @media only screen and (max-width: 600px) {

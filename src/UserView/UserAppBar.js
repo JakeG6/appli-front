@@ -66,17 +66,25 @@ class UserAppBar extends Component {
         const styles = {
             
             username: {
-            marginLeft: '1em'
+                backgroundColor: 'rgb(54, 193, 54)',
+                color: 'white',
             },
             grow: {
-            flexGrow: 1
+                flexGrow: 1
             },
             grow2: {
-            flexGrow: 2
+                flexGrow: 2
             },
             displayOption:{
-            marginLeft: '1em',
-            marginRight: '1em'
+                marginLeft: '1em',
+                marginRight: '1em',
+                color: 'white'
+            },
+            sortButton: {},
+            userMenu: {
+                fontSize: 50,
+                color: 'white',
+                
             }
         }
     
@@ -84,23 +92,25 @@ class UserAppBar extends Component {
             <div>
                 <AppBar position="static" >
                     <Toolbar className="green">
-                        <MenuIcon 
+                        <Button
                             aria-owns={userMenuEl ? "user-menu" : null}
                             aria-haspopup="true"
                             onClick={this.userMenuOpen}
-                        />
+                        >
+                        <MenuIcon style={styles.userMenu} />
+                        </Button>
+                        
                         <Menu 
                             id="user-menu" 
                             anchorEl={userMenuEl}
                             open={Boolean(userMenuEl)}
                             onClose={this.userMenuClose}
                         >
-                            <MenuItem onClick={this.userMenuClose}>{this.props.currentUsername}</MenuItem>
-                            <MenuItem onClick={this.userMenuClose}>an option</MenuItem>
-                            <MenuItem onClick={this.userMenuClose}>an option</MenuItem>
+                            <MenuItem onClick={this.userMenuClose} style={styles.username}>{this.props.currentUsername}</MenuItem>
+                            <MenuItem onClick={this.userMenuClose}><Link to="/inner/settings" className="userbar-link">User Settings</Link></MenuItem>
+                            <MenuItem onClick={this.props.handleLogout}><Link to="/" className="userbar-link">Log Out</Link></MenuItem>
+
                         </Menu>
-                        {/* <Button  onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
-                        <Button><Link to="/inner/settings">User Settings</Link></Button> */}
                         <div style={styles.grow}/>     
                         <FormControlLabel control={
                             <Switch checked={this.props.showArchived} onChange={this.props.handleSwitch('showArchived')} value="showArchived" />                   
@@ -110,7 +120,7 @@ class UserAppBar extends Component {
                             style={styles.displayOption}
                         />
                         <Button
-                        style={styles.displayOption}      
+                        style={styles.displayOption }      
                         aria-owns={anchorEl ? "sort-form" : null}
                         aria-haspopup="true"
                         onClick={this.sortMenuOpen}
