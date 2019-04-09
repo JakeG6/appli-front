@@ -91,7 +91,7 @@ class EditTicket extends Component {
         return (
             <div>
                 <form onSubmit={this.updateTicket}>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={24} align="center">
                         <Grid item xs={6}>
                             <TextField
                                 required

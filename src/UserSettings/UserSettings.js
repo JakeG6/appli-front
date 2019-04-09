@@ -99,7 +99,6 @@ class UserSettings extends Component {
           return (<Redirect to="/" />) 
         }
     }
-
 }
 
 export default UserSettings

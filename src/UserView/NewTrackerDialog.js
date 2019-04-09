@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
+import Grid from '@material-ui/core/Grid';
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandshake } from '@fortawesome/free-solid-svg-icons'
@@ -9,10 +11,8 @@ import { faHandshake } from '@fortawesome/free-solid-svg-icons'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-//import ClearIcon from '@material-ui/icons/Clear';
 
 
-import Grid from '@material-ui/core/Grid';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -146,7 +146,7 @@ class NewTrackerDialog extends Component {
         <div className="App" style={{ padding: 12 }}>
           <DialogTitle id="form-dialog-title">Create an Application Ticket</DialogTitle>
           <form onSubmit={this.postTicket}>
-            <Grid container spacing={24}>
+            <Grid container spacing={24} justify="center" align="center">
               <Grid item xs={6}>
                 <TextField
                   required
@@ -170,7 +170,7 @@ class NewTrackerDialog extends Component {
                 />                    
               </Grid>
               <Grid item xs={12}>
-                <Grid container spacing={0}>
+                <Grid container spacing={24}>
                   <Grid item xs={6}>
                     <TextField
                       label="Resume"

@@ -65,10 +65,7 @@ class UserAppBar extends Component {
 
         const styles = {
             
-            username: {
-                backgroundColor: 'rgb(54, 193, 54)',
-                color: 'white',
-            },
+           
             grow: {
                 flexGrow: 1
             },
@@ -80,18 +77,13 @@ class UserAppBar extends Component {
                 marginRight: '1em',
                 color: 'white'
             },
-            sortButton: {},
-            userMenu: {
-                fontSize: 50,
-                color: 'white',
-                
-            }
+            
         }
     
         return (
             <div>
-                <AppBar position="static" >
-                    <Toolbar className="green">
+                <AppBar position="static"  >
+                    <Toolbar color="primary">
                         <Button
                             aria-owns={userMenuEl ? "user-menu" : null}
                             aria-haspopup="true"

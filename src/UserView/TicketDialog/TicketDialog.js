@@ -25,15 +25,8 @@ class TicketDialog extends Component {
   };
 
   toggleEditDisplay() {
-    // this.state.showEditForm ? 
-    // this.setState({showEditForm: false}, () => {
-    //   console.log(this.state.showEditForm)
-    // }) : this.setState({showEditForm: true}, () => {
-    //   console.log(this.state.showEditForm)
-    // })
-    this.setState({showEditForm: !this.state.showEditForm}, () => {
-        console.log(this.state.showEditForm)
-      }) 
+  
+    this.setState({showEditForm: !this.state.showEditForm}) 
   }
 
   render() {     

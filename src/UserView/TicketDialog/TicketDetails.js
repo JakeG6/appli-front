@@ -66,7 +66,7 @@ class TicketDetails extends Component {
         
         return (
             <div>
-                <Grid container spacing={24}>
+                <Grid container spacing={24} align="center">
                     <Grid item xs={4}>
                         <h3>Company</h3>
                         <p>{this.props.ticket.company}</p>
