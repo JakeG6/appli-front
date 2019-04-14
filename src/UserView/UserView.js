@@ -9,7 +9,6 @@ import NewTrackerDialog from './NewTrackerDialog.js';
 import Ticket from './Ticket.js';
 import TicketDialog from './TicketDialog/TicketDialog.js';
 
-import lightGreen from '@material-ui/core/colors/lightGreen';
 
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
@@ -128,11 +127,11 @@ class UserView extends Component {
 
   render() {
 
-    const primary = lightGreen.A400;
+    
     const styles = {
       fabStyle: {
         color: 'white',
-        backgroundColor: 'rgb(54, 193, 54)',
+        
         position: 'fixed',
         display: 'block',
         bottom: '20px',
@@ -191,8 +190,8 @@ class UserView extends Component {
               <p> You haven't made any job tickets yet.</p>
               </Fade>
             }
-            <Fab  onClick={this.handleClickOpen} style={styles.fabStyle} >
-              <AddIcon className={'green'}/>
+            <Fab color="primary" onClick={this.handleClickOpen} style={styles.fabStyle} >
+              <AddIcon  />
             </Fab>
           </div>
 

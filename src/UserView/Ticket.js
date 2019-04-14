@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import  "./applicationProgress";
 
-//import { withStyles } from '@material-ui/core/styles';
-
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -20,44 +18,32 @@ import { applicationProgress } from './applicationProgress.js';
 library.add(faHandshake, faCopy, faTimes, faDoorOpen, faPhone, faDoorClosed)
 
 
+
 class Ticket extends Component {
 
     constructor(props) {
       super(props)
-      this.state = {
-        //open: false,
-      }
-  
-      //this.handleClickOpen = this.handleClickOpen.bind(this)
-      //this.handleClose = this.handleClose.bind(this)
-      
     }
 
     render() {
-      const styles = {
-          //maxWidth: '300px',
-          card: {
-            height: '300px',
-            backgroundColor: 'rgb(54, 193, 54)',    
-            color: 'white'
-          },
-          root: {
-            
-            color: 'white'
-          },
-          cardContent: {
-            svg: {
-              color: 'white'
-            }
-            
-          }
-                  
-      }
       
+      const styles = {
+        card: {
+          root: {
+            height: '300px',
+            hover: {
+              cursor:'pointer'
+            }
+          } 
+        },
+        
+                         
+      }
+
       return (
-        <Card className={'ticket'} style={styles.card} color="primary">
-          <CardHeader 
-            style={styles.cardHeader}
+        
+        <Card  style={styles.card.root}  className={"ticket"}>
+          <CardHeader          
             title={this.props.ticket.company}
             subheader={this.props.ticket.position}
           />

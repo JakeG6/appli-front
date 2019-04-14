@@ -106,7 +106,7 @@ class ChangePassword extends Component {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            <Button type="Submit" color="secondary" variant="contained" label="create">Submit</Button> 
+                            <Button type="Submit" color="primary" variant="contained" label="create">Submit</Button> 
                         </Grid>
                     </Grid>                                                   
                 </form>

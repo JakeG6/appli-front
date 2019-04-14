@@ -35,8 +35,9 @@ class TicketDialog extends Component {
             {!this.state.showEditForm ?
             <TicketDetails ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
             retrieveTickets={this.props.retrieveTickets} handleTicketClose={this.props.handleTicketClose}
-            getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}
-            />
+            getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails} />
+
+            
             :
             <EditTicket ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
             retrieveTickets={this.props.retrieveTickets} showArchived={this.props.showArchived} 

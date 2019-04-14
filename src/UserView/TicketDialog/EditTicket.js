@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Button from '@material-ui/core/Button';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
@@ -88,11 +89,13 @@ class EditTicket extends Component {
     }
 
     render() {
+
         return (
             <div>
+                <DialogTitle id="form-dialog-title">Edit Ticket</DialogTitle>
                 <form onSubmit={this.updateTicket}>
                     <Grid container spacing={24} align="center">
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 required
                                 label="Company"
@@ -103,7 +106,7 @@ class EditTicket extends Component {
                                 variant="filled"
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 required
                                 label="Position"
@@ -115,7 +118,7 @@ class EditTicket extends Component {
                             />                    
                         </Grid>                   
                         <Grid container spacing={0} >
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="Resume"
                                     value={this.state.resumeLink}
@@ -124,7 +127,7 @@ class EditTicket extends Component {
                                     variant="filled"
                                 />     
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={12} sm={6}>
                                 <FormControlLabel
                                     control={
                                     <Switch
@@ -149,6 +152,7 @@ class EditTicket extends Component {
                                 placeholder="Other Important Details"
                                 multiline
                                 variant="filled"
+                                
                             />
                         </Grid>
                         <Grid item xs={12}>                       
@@ -199,7 +203,7 @@ class EditTicket extends Component {
                         : null}
                         <Grid item xs={12}>
                             <Grid container spacing = {24}>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <FormControlLabel
                                     control={
                                     <Switch
@@ -213,7 +217,7 @@ class EditTicket extends Component {
                                     labelPlacement="start"
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <DialogActions>
                                         <Button variant="contained" onClick={this.props.toggleEditDisplay}>
                                             Cancel

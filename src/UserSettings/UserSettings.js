@@ -29,13 +29,10 @@ class UserSettings extends Component {
     render() {
 
       const styles = {
-        background: {
-          backgroundColor: '#F5F5F5',
-          height: '89vh'
-        },
+        
         settingsCard: {
           margin: '5em auto',
-          maxWidth: '50%'
+          maxWidth: '633px'
         },
         username: {
           marginLeft: '1em'
@@ -69,16 +66,17 @@ class UserSettings extends Component {
             <div style={styles.background}>
               {/* Navigation Bar */}
                 <AppBar position="static" >
-                  <Toolbar className="green">
+                  <Toolbar >
                     <Button onClick={this.props.handleLogout}><Link to="/">LOG OUT</Link></Button>
                     <Button><Link to="/inner">My Job Tickets</Link></Button>                                 
                     <div style={styles.grow}/>             
-                    <h1 className="green userview-logo">APPLi</h1>         
+                    <h1 className="userview-logo">APPLi</h1>         
                   </Toolbar>
                 </AppBar>
                 {/* Settings Card */}
                 <Card style={styles.settingsCard}>
                   <Tabs
+                   
                     style={styles.tab}
                     value={value}
                     onChange={this.handleTab}

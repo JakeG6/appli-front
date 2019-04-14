@@ -102,7 +102,7 @@ class Home extends Component {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                     })
-                    .then( (response) => {                          
+                    .then( response => {                          
                         this.setState({redirectToSignupSuccess: true}, () => {
                             this.props.history.push('/signupsuccess') 
                         })                           
@@ -122,10 +122,11 @@ class Home extends Component {
 
         const style={
             loginCard: {
-                maxWidth: '50%',
+                maxWidth: '442px',
                 margin: '0 auto',
                 padding: '1em'
-            }
+            },
+            
         }
         
         if (localStorage.getItem("jwtToken")) {
@@ -143,31 +144,36 @@ class Home extends Component {
 
         return (
             <div>
-                <h1 className="green home-logo">APPLi</h1>
+                <div >
+                    <h1 className="home-logo">APPLi</h1> 
+                </div>
                 <Card style={style.loginCard}>
                     <div className="login-message">
                         <h4>{this.state.loginMessage}</h4>
                     </div>
                     <form onSubmit={this.handleLogin} style={{ padding: 8 }}>
                         <Grid container spacing={16} direction="row" justify="center">
-                            <Grid item xs={6} >
+                            <Grid item xs={12} sm={6}>
                                 <FormControl margin="normal">
                                     <InputLabel htmlFor="component-simple">Name</InputLabel>
                                     <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={6} >
+                            <Grid item xs={12} sm={6}>
                                 <FormControl margin="normal">
                                     <InputLabel htmlFor="component-simple">Password</InputLabel>
                                     <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Button  color="secondary" label="submit" type="Submit" variant="contained" >Log In</Button>
+                            <Grid item xs={12} sm={6}>
+                                <Button  color="primary" label="submit" type="Submit" variant="contained" >Log In</Button>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button onClick={this.handleOpen} color="secondary" variant="contained">Sign Up</Button>
                             </Grid>
                         </Grid>
+                        
                     </form>
-                    <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
                 </Card>
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">
                     <h2>Register for an Account</h2>

@@ -64,8 +64,10 @@ class UserAppBar extends Component {
         const { anchorEl, userMenuEl } = this.state;
 
         const styles = {
-            
-           
+            hamburgerButton: {
+                fontSize: '50px',
+                color: 'white'
+            },
             grow: {
                 flexGrow: 1
             },
@@ -78,6 +80,7 @@ class UserAppBar extends Component {
                 color: 'white'
             },
             
+            
         }
     
         return (
@@ -85,11 +88,12 @@ class UserAppBar extends Component {
                 <AppBar position="static"  >
                     <Toolbar color="primary">
                         <Button
+                            style={styles.hamburgerButton}
                             aria-owns={userMenuEl ? "user-menu" : null}
                             aria-haspopup="true"
                             onClick={this.userMenuOpen}
                         >
-                        <MenuIcon style={styles.userMenu} />
+                        <MenuIcon style={styles.hamburgerButton} />
                         </Button>
                         
                         <Menu 
@@ -105,11 +109,16 @@ class UserAppBar extends Component {
                         </Menu>
                         <div style={styles.grow}/>     
                         <FormControlLabel control={
-                            <Switch checked={this.props.showArchived} onChange={this.props.handleSwitch('showArchived')} value="showArchived" />                   
+                            <Switch checked={this.props.showArchived} 
+                                onChange={this.props.handleSwitch('showArchived')} 
+                                value="showArchived"
+                                color="secondary"
+                            />                   
                             }
                             labelPlacement="start"
                             label="Show Archived Tickets"
                             style={styles.displayOption}
+                            
                         />
                         <Button
                         style={styles.displayOption }      
@@ -130,7 +139,7 @@ class UserAppBar extends Component {
                         <MenuItem onClick={() => this.sortMenuClose("oldToNew")}>Oldest to Newest</MenuItem>                               
                         </Menu>             
                         <div style={styles.grow}/>             
-                        <h1 className="green userview-logo">APPLi</h1>         
+                        <h1 className="userview-logo">APPLi</h1>         
                     </Toolbar>
                 </AppBar>
             </div>
