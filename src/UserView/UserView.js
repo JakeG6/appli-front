@@ -9,7 +9,6 @@ import NewTrackerDialog from './NewTrackerDialog.js';
 import Ticket from './Ticket.js';
 import TicketDialog from './TicketDialog/TicketDialog.js';
 
-
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import Fab from '@material-ui/core/Fab';
@@ -31,8 +30,7 @@ class UserView extends Component {
       userTickets: []
   
     }
-    //this.sortMenuClose = this.sortMenuClose.bind(this)
-    //this.sortMenuOpen = this.sortMenuOpen.bind(this)
+    
     this.changeSortOrder = this.changeSortOrder.bind(this)
     this.retrieveTickets = this.retrieveTickets.bind(this)
     this.handleClickOpen = this.handleClickOpen.bind(this)
@@ -58,9 +56,7 @@ class UserView extends Component {
   }
 
   handleTicketOpen(ticket, index) {
-    this.setState({ticketDetails: ticket, activeTicket: index, openTicket: true}, () => {
-      console.log(this.state.activeTicket)
-    })
+    this.setState({ticketDetails: ticket, activeTicket: index, openTicket: true})
   }
 
   handleTicketClose() {
@@ -95,7 +91,6 @@ class UserView extends Component {
             })
           
         this.setState({loading: false, userTickets: ticketOrder}, () => {
-          //console.log('userview reloaded')
         })
         this.getUpdatedTicketDetails()
       }).catch((error)=>{
@@ -106,10 +101,9 @@ class UserView extends Component {
     })
   }
 
-  ///get updated ticket details immediately after updating the db and retrieving tickets (aaaaaargh!)
+  //get updated ticket details immediately after updating the db and retrieving tickets (aaaaaargh!)
   getUpdatedTicketDetails = () => {
     return this.setState({ticketDetails: this.state.userTickets[this.state.activeTicket]}, () => {
-      //console.log(this.state.ticketDetails)
      })
   }
 
@@ -127,11 +121,9 @@ class UserView extends Component {
 
   render() {
 
-    
     const styles = {
       fabStyle: {
         color: 'white',
-        
         position: 'fixed',
         display: 'block',
         bottom: '20px',
@@ -215,7 +207,6 @@ class UserView extends Component {
     else { 
       return (<Redirect to="/" />) 
     }
-
   }
 }
 

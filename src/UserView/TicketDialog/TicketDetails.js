@@ -3,10 +3,7 @@ import axios from 'axios';
 
 import { applicationProgress } from  "../applicationProgress";
 
-
-//import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import Button from '@material-ui/core/Button';
-//import IconButton from '@material-ui/core/IconButton';
 import BuildIcon from '@material-ui/icons/Build';
 
 import Dialog from '@material-ui/core/Dialog';

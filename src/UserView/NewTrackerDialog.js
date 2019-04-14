@@ -78,11 +78,11 @@ class NewTrackerDialog extends Component {
           archived: 0
         }
       }).then(response => {
-        console.log("the ticket was posted.")
+        
         return this.props.retrieveTickets()          
       }).then(response => {  
         this.props.handleClose()
-        console.log("we've closed the dialog")      
+              
       }).catch(error => {
         console.log(error);
       });
@@ -93,7 +93,6 @@ class NewTrackerDialog extends Component {
   }
 
   postArchivedTicket = decision => {
-    console.log('a decision has been made: ', decision)
 
     let value = -1
     if (decision === 'yes') {
@@ -119,18 +118,17 @@ class NewTrackerDialog extends Component {
         archived: value
       }
     }).then(response => {
-      return this.props.retrieveTickets()          
+        return this.props.retrieveTickets()          
     }).then(response => {  
-      this.props.handleClose()
+        this.props.handleClose()
     }).catch(error => {
-      console.log(error);
+        console.log(error);
     });
   }
 
   componentDidMount() {
     if (localStorage.getItem('jwtToken')) {
       let decoded = jwt_decode(localStorage.getItem('jwtToken'))
-      //console.log(decoded)
       this.setState({userId: decoded.id})       
     }
     else {

@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
-
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
-
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
-
 import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
+
 
 class UserAppBar extends Component {
 
@@ -58,8 +57,6 @@ class UserAppBar extends Component {
         this.setState({userMenuEl: null})
     }
     
-    
-
     render() {
         const { anchorEl, userMenuEl } = this.state;
 
@@ -77,10 +74,8 @@ class UserAppBar extends Component {
             displayOption:{
                 marginLeft: '1em',
                 marginRight: '1em',
-                color: 'white'
-            },
-            
-            
+                
+            },        
         }
     
         return (
@@ -118,7 +113,6 @@ class UserAppBar extends Component {
                             labelPlacement="start"
                             label="Show Archived Tickets"
                             style={styles.displayOption}
-                            
                         />
                         <Button
                         style={styles.displayOption }      

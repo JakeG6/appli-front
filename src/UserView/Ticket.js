@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+
 import  "./applicationProgress";
+import { applicationProgress } from './applicationProgress.js';
+
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -13,11 +16,7 @@ import { faDoorOpen } from '@fortawesome/free-solid-svg-icons'
 import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
 
-import { applicationProgress } from './applicationProgress.js';
-
 library.add(faHandshake, faCopy, faTimes, faDoorOpen, faPhone, faDoorClosed)
-
-
 
 class Ticket extends Component {
 
@@ -36,14 +35,14 @@ class Ticket extends Component {
             }
           } 
         },
-        
-                         
+                      
       }
 
       return (
         
         <Card  style={styles.card.root}  className={"ticket"}>
-          <CardHeader          
+          <CardHeader
+            className={"ticket-header"}
             title={this.props.ticket.company}
             subheader={this.props.ticket.position}
           />

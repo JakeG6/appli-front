@@ -93,7 +93,8 @@ class UserSettings extends Component {
                 </Card>
               </div>
           )
-        } else {
+        } 
+        else {
           return (<Redirect to="/" />) 
         }
     }

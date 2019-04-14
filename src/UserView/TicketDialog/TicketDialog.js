@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import TicketDetails from './TicketDetails'
 import EditTicket from './EditTicket'
 
-
-
-
 class TicketDialog extends Component {
   constructor(props) {
     super(props)

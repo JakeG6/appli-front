@@ -11,11 +11,6 @@ body {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -82,11 +77,15 @@ html, body {
   cursor: pointer;
 }
 
-.ticket-tray {
+.ticket-header {
+  height: 72px
+}
 
+.ticket-tray {
   padding-left:5px;
   padding-right:5px;
 }
+
 
 .white-text {
   color: white
@@ -95,11 +94,6 @@ html, body {
 .blue {
   background-color: blue;
 }
-
-/* .green {
-  background-color: #36c136
-} */
-
 
 .App-link {
   color: #61dafb;
@@ -114,6 +108,3 @@ html, body {
     display: none
   }
 }
-
-
-

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
-
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
@@ -12,7 +11,6 @@ import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
-
 
 class ChangePassword extends Component {
     constructor(props) {
@@ -51,14 +49,12 @@ class ChangePassword extends Component {
                 }  
                 })
                 .then(response => {                          
-                    console.log(response)
+                    
                     this.setState({loading: false, didUpdatePW: true})      
                  })
                 .catch((error) => {
-                    console.log(error);
-                    this.setState({loading: false, incorrectPW: true}, () => {
-                        console.log(this.state.loading)
-                    })
+                    
+                    this.setState({loading: false, incorrectPW: true})
 
                 }
             );
@@ -114,7 +110,8 @@ class ChangePassword extends Component {
                 </div>
             }
             </div>
-        )} //otherwise, send the user to the login page.
+        )} 
+        //otherwise, send the user to the login page.
         else { 
           return (<Redirect to="/" />) 
         } 

@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Dialog from '@material-ui/core/Dialog';
-
-import jwt_decode from 'jwt-decode';
 
 import { BrowserRouter as  Redirect } from "react-router-dom";
 
@@ -86,14 +82,14 @@ class Home extends Component {
             console.log(error);
             this.setState({loginMessage: "Sorry. Your username or password is incorrect."})
         })
-
     }
 
     handleRegistration = event => {
         event.preventDefault();
-        //console.log('hey we are logging')
+
         //check that username and passwords aren't empty strings
         if (this.state.newUsername.length > 0 && this.state.newPassword.length > 0) {
+            
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
@@ -125,21 +121,21 @@ class Home extends Component {
                 maxWidth: '442px',
                 margin: '0 auto',
                 padding: '1em'
-            },
-            
+            },            
         }
         
         if (localStorage.getItem("jwtToken")) {
+            
             //decode the jwt's payload.
             let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+
             //get the current time
             let currentTime = Math.floor(Date.now() / 1000)
 
             //if the current time on rendering is earlier than the expiration date, show the page.
             if (currentTime < decoded.exp) {
                 return (<Redirect to='/inner' />)
-            }
-            
+            }            
         }
 
         return (

@@ -3,15 +3,11 @@ import axios from 'axios';
 
 import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import DialogActions from '@material-ui/core/DialogActions';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
-
-import DialogActions from '@material-ui/core/DialogActions';
-
-
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class EditTicket extends Component {
     
@@ -46,9 +42,7 @@ class EditTicket extends Component {
         if (name === 'jobOffered') {
             this.setState({acceptedOffer: false})
           }
-        this.setState({ [name]: event.target.checked }, () => {
-            console.log('this.state.archived: ', this.state.archived)
-        });
+        this.setState({ [name]: event.target.checked });
     }
 
     updateTicket = async (event) => {
@@ -74,13 +68,13 @@ class EditTicket extends Component {
         })
             
         .then(async response => {
-            console.log('retrieving tickets')
+            
             await this.props.retrieveTickets()
         })
-        .then(response => {
-            console.log('getting updated ticketdetails')
-            // return this.props.getUpdatedTicketDetails()
-        })
+        // .then(response => {
+            
+        //     // return this.props.getUpdatedTicketDetails()
+        // })
         .catch(error => {
             console.log(error)
         });
