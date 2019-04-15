@@ -64,7 +64,7 @@ class NewTrackerDialog extends Component {
     if (!this.state.acceptedOffer) {
       axios({
         method: 'post',
-        url: '/createticket',
+        url: 'https://appli-api.herokuapp.com/createticket',
         data: {
           userId: this.state.userId,
           companyName: this.state.companyName,
@@ -104,7 +104,7 @@ class NewTrackerDialog extends Component {
 
     axios({
       method: 'post',
-      url: '/createticket',
+      url: 'https://appli-api.herokuapp.com/createticket',
       data: {
         userId: this.state.userId,
         companyName: this.state.companyName,

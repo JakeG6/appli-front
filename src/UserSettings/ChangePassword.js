@@ -38,7 +38,7 @@ class ChangePassword extends Component {
         this.setState({loading: true}, () => {
             return axios({
                 method: 'put',
-                url: `/updatepassword`,
+                url: `https://appli-api.herokuapp.com/updatepassword`,
                 data: {
                     oldPassword: this.state.oldPassword,
                     newPassword: this.state.newPassword,

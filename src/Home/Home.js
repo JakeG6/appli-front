@@ -47,7 +47,7 @@ class Home extends Component {
     };
 
     checkUniqueUsername(username) {
-        return axios.get(`/checkuniquename/${username}`)
+        return axios.get(`https://appli-api.herokuapp.com/checkuniquename/${username}`)
         .then((response) => {
             if (response.data === false) {
                 this.setState({registrationMessage: "Sorry, but that username is taken"})
@@ -66,7 +66,7 @@ class Home extends Component {
         event.preventDefault();
 
         //Make a network call somewhere
-        axios.post(`/login`, {
+        axios.post(`https://appli-api.herokuapp.com/login`, {
             username: this.state.name,
             password: this.state.password
         })
@@ -94,7 +94,7 @@ class Home extends Component {
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
                 if (isUnique === true) {
-                    axios.post('/createuser', {
+                    axios.post('https://appli-api.herokuapp.com/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                     })

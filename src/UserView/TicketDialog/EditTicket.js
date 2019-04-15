@@ -49,7 +49,7 @@ class EditTicket extends Component {
         event.preventDefault();
         await axios({
             method: 'put',
-            url: `/updateticket/${this.state.ticketId}`,
+            url: `https://appli-api.herokuapp.com/updateticket/${this.state.ticketId}`,
             data: {
                 ticketId: this.state.ticketId,
                 companyName: this.state.companyName,

@@ -73,8 +73,8 @@ class UserView extends Component {
   retrieveTickets = () => {
     this.setState({loading: true}, () => {
       let apiEndpoint = ''     
-      this.state.showArchived ? apiEndpoint = '/retrievetickets/showarchived' 
-        : apiEndpoint = '/retrievetickets/notarchived'
+      this.state.showArchived ? apiEndpoint = 'https://appli-api.herokuapp.com/retrievetickets/showarchived' 
+        : apiEndpoint = 'https://appli-api.herokuapp.com/retrievetickets/notarchived'
         axios.get(apiEndpoint, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
         .then((tickets)=>{
           let ticketOrder = []
