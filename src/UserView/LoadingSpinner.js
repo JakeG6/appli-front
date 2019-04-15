@@ -7,11 +7,10 @@ const spinnerStyle = {
 }
 
 const spinnerContainer = {
-    height: '100%',
+    height: '79vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-
 
 }
 

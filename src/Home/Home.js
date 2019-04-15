@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Dialog from '@material-ui/core/Dialog';
-
-import jwt_decode from 'jwt-decode';
 
 import { BrowserRouter as  Redirect } from "react-router-dom";
 
@@ -79,37 +80,32 @@ class Home extends Component {
         })
         .catch( (error) => {
             console.log(error);
-            this.setState({loginMessage: "There is an error with the server. please try again later."})
+            this.setState({loginMessage: "Sorry. Your username or password is incorrect."})
         })
-
     }
 
     handleRegistration = event => {
         event.preventDefault();
-        //console.log('hey we are logging')
+
         //check that username and passwords aren't empty strings
         if (this.state.newUsername.length > 0 && this.state.newPassword.length > 0) {
+            
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
-
                 if (isUnique === true) {
                     axios.post('/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
-                        })
-                        .then( (response) => {
-                           
-                            this.setState({redirectToSignupSuccess: true}, () => {
-                                this.props.history.push('/signupsuccess')
-
-                                
-                            })
-                            
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
+                    })
+                    .then( response => {                          
+                        this.setState({redirectToSignupSuccess: true}, () => {
+                            this.props.history.push('/signupsuccess') 
+                        })                           
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
                 }
             })
         }
@@ -119,54 +115,62 @@ class Home extends Component {
     }
 
     render() {
+
+        const style={
+            loginCard: {
+                maxWidth: '442px',
+                margin: '0 auto',
+                padding: '1em'
+            },            
+        }
         
         if (localStorage.getItem("jwtToken")) {
+            
             //decode the jwt's payload.
             let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+
             //get the current time
             let currentTime = Math.floor(Date.now() / 1000)
 
             //if the current time on rendering is earlier than the expiration date, show the page.
             if (currentTime < decoded.exp) {
                 return (<Redirect to='/inner' />)
-            }
-            else {}
+            }            
         }
-
-        // let redirectToSignupSuccess = this.state.redirectToSignupSuccess
-
-        // if (redirectToSignupSuccess === true) {
-        //     return (<Redirect to='/signupsuccess' push={true}/>)
-        // }
 
         return (
             <div>
-                <h1 className="green home-logo">APPLi</h1>
-                <div className="login-message">
-                    <h4>{this.state.loginMessage}</h4>
+                <div >
+                    <h1 className="home-logo">APPLi</h1> 
                 </div>
-                <form onSubmit={this.handleLogin} style={{ padding: 8 }}>
-                    <Grid container spacing={16} direction="row" justify="center">
-                        <Grid item xs={2} >
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="component-simple">Name</InputLabel>
-                                <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
-                            </FormControl>
+                <Card style={style.loginCard}>
+                    <div className="login-message">
+                        <h4>{this.state.loginMessage}</h4>
+                    </div>
+                    <form onSubmit={this.handleLogin} style={{ padding: 8 }}>
+                        <Grid container spacing={16} direction="row" justify="center">
+                            <Grid item xs={12} sm={6}>
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Name</InputLabel>
+                                    <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Password</InputLabel>
+                                    <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button  color="primary" label="submit" type="Submit" variant="contained" >Log In</Button>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Button onClick={this.handleOpen} color="secondary" variant="contained">Sign Up</Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={2} >
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="component-simple">Password</InputLabel>
-                                <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button  color="secondary" label="submit" type="Submit" variant="contained" >Log In</Button>
-                        </Grid>
-                    </Grid>
-                </form>
-
-                <Button onClick={this.handleOpen} color="primary" variant="contained">Sign Up</Button>
-
+                        
+                    </form>
+                </Card>
                 <Dialog open={this.state.dialogueOpen} onClose={this.handleClose} className="registration-popup">
                     <h2>Register for an Account</h2>
                     <form onSubmit={this.handleRegistration} style={{ padding: 8 }}>
@@ -189,7 +193,7 @@ class Home extends Component {
                             </Grid>
                         </Grid>
                     </form>
-                </Dialog>   
+                </Dialog>                 
             </div>
         )
     }

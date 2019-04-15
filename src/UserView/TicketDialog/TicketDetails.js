@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { applicationProgress } from  "../applicationProgress";
-
 import axios from 'axios';
 
-//import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import { applicationProgress } from  "../applicationProgress";
+
 import Button from '@material-ui/core/Button';
-//import IconButton from '@material-ui/core/IconButton';
 import BuildIcon from '@material-ui/icons/Build';
 
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -63,10 +62,22 @@ class TicketDetails extends Component {
         const linkStyle = {
             color: 'blue'
         }
+        const brandGreen = '#36c136'
+        const styles ={
+            buttonIcon: {
+                marginLeft: '.5em'
+            },
+            dangerRed: {
+                backgroundColor: 'red',
+                color: 'white'
+            },
+           
+        }
         
         return (
             <div>
-                <Grid container spacing={24}>
+                <DialogTitle>Ticket Details</DialogTitle>
+                <Grid container spacing={24} align="center">
                     <Grid item xs={4}>
                         <h3>Company</h3>
                         <p>{this.props.ticket.company}</p>
@@ -96,13 +107,13 @@ class TicketDetails extends Component {
                         <h2>Cover Letter</h2>
                         {this.props.ticket.includes_cover_letter  ?
                             <div>
-                                <FontAwesomeIcon icon="copy" color="black" size="7x" />
-                                <h3>Yes</h3>
+                                <FontAwesomeIcon icon="copy" color={brandGreen} size="7x" />
+                                <p>Yes</p>
                             </div>
                             :
                             <div>
                                 <FontAwesomeIcon icon="times" color="red" size="7x" />
-                                <h3>No</h3>
+                                <p>No</p>
                             </div>
                         }                       
                     </Grid>
@@ -112,13 +123,13 @@ class TicketDetails extends Component {
                     </Grid>
                 </Grid>
                 <DialogActions>
-                    <Button variant="contained" color="primary" onClick={this.props.toggleEditDisplay}>
+                    <Button variant="contained" color="secondary" onClick={this.props.toggleEditDisplay}>
                         Edit 
-                        <BuildIcon  />
+                        <BuildIcon  style={styles.buttonIcon}/>
                     </Button>
-                    <Button variant="contained" color="secondary" onClick={this.handleWarningDisplay}>
+                    <Button variant="contained" style={styles.dangerRed} onClick={this.handleWarningDisplay}>
                         Delete 
-                        <DeleteIcon />
+                        <DeleteIcon  style={styles.buttonIcon}/>
                     </Button>  
                 </DialogActions>
                 <Dialog
@@ -133,11 +144,11 @@ class TicketDetails extends Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button variant="contained" onClick={this.handleWarningDisplay} color='primary'>
+                        <Button variant="contained" color='secondary' onClick={this.handleWarningDisplay} >
                             Cancel
                         </Button>
-                        <Button variant="contained" color="secondary" onClick={this.deleteTicket}>
-                            Yes 
+                        <Button variant="contained" style={styles.dangerRed} onClick={this.deleteTicket}>
+                            Delete 
                         </Button>
                     </DialogActions>
                 </Dialog> 

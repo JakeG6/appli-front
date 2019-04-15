@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import TicketDetails from './TicketDetails'
 import EditTicket from './EditTicket'
 
-
-
-
 class TicketDialog extends Component {
   constructor(props) {
     super(props)
@@ -25,12 +22,8 @@ class TicketDialog extends Component {
   };
 
   toggleEditDisplay() {
-    this.state.showEditForm ? 
-    this.setState({showEditForm: false}, () => {
-      console.log(this.state.showEditForm)
-    }) : this.setState({showEditForm: true}, () => {
-      console.log(this.state.showEditForm)
-    })
+  
+    this.setState({showEditForm: !this.state.showEditForm}) 
   }
 
   render() {     
@@ -39,8 +32,9 @@ class TicketDialog extends Component {
             {!this.state.showEditForm ?
             <TicketDetails ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
             retrieveTickets={this.props.retrieveTickets} handleTicketClose={this.props.handleTicketClose}
-            getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails}
-            />
+            getUpdatedTicketDetails = {this.props.getUpdatedTicketDetails} />
+
+            
             :
             <EditTicket ticket={this.props.ticket} toggleEditDisplay={this.toggleEditDisplay} 
             retrieveTickets={this.props.retrieveTickets} showArchived={this.props.showArchived} 

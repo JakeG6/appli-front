@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
+import Grid from '@material-ui/core/Grid';
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandshake } from '@fortawesome/free-solid-svg-icons'
@@ -9,10 +11,6 @@ import { faHandshake } from '@fortawesome/free-solid-svg-icons'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-//import ClearIcon from '@material-ui/icons/Clear';
-
-
-import Grid from '@material-ui/core/Grid';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -53,7 +51,11 @@ class NewTrackerDialog extends Component {
   };
 
   handleSwitch = name => event => {
+    if (name === 'jobOffered') {
+      this.setState({acceptedOffer: false})
+    }
     this.setState({ [name]: event.target.checked });
+    
   };
 
   postTicket = event => {
@@ -62,7 +64,7 @@ class NewTrackerDialog extends Component {
     if (!this.state.acceptedOffer) {
       axios({
         method: 'post',
-        url: 'http://localhost:4242/createticket',
+        url: '/createticket',
         data: {
           userId: this.state.userId,
           companyName: this.state.companyName,
@@ -76,11 +78,11 @@ class NewTrackerDialog extends Component {
           archived: 0
         }
       }).then(response => {
-        console.log("the ticket was posted.")
+        
         return this.props.retrieveTickets()          
       }).then(response => {  
         this.props.handleClose()
-        console.log("we've closed the dialog")      
+              
       }).catch(error => {
         console.log(error);
       });
@@ -91,7 +93,6 @@ class NewTrackerDialog extends Component {
   }
 
   postArchivedTicket = decision => {
-    console.log('a decision has been made: ', decision)
 
     let value = -1
     if (decision === 'yes') {
@@ -103,7 +104,7 @@ class NewTrackerDialog extends Component {
 
     axios({
       method: 'post',
-      url: 'http://localhost:4242/createticket',
+      url: '/createticket',
       data: {
         userId: this.state.userId,
         companyName: this.state.companyName,
@@ -117,18 +118,17 @@ class NewTrackerDialog extends Component {
         archived: value
       }
     }).then(response => {
-      return this.props.retrieveTickets()          
+        return this.props.retrieveTickets()          
     }).then(response => {  
-      this.props.handleClose()
+        this.props.handleClose()
     }).catch(error => {
-      console.log(error);
+        console.log(error);
     });
   }
 
   componentDidMount() {
     if (localStorage.getItem('jwtToken')) {
       let decoded = jwt_decode(localStorage.getItem('jwtToken'))
-      //console.log(decoded)
       this.setState({userId: decoded.id})       
     }
     else {
@@ -137,19 +137,20 @@ class NewTrackerDialog extends Component {
   }
 
   render() {
+
+      const styles = {
+        handshake: {
+          marginLeft: "auto",
+          marginRight: "auto"
+        }
+      }
     
       return (
         <div className="App" style={{ padding: 12 }}>
           <DialogTitle id="form-dialog-title">Create an Application Ticket</DialogTitle>
-          {/* {
-            this.state.loading ? {
-
-            }
-          } */}
-
           <form onSubmit={this.postTicket}>
-            <Grid container spacing={24}>
-              <Grid item xs={6}>
+            <Grid container spacing={24} justify="center" align="center">
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   label="Company"
@@ -160,7 +161,7 @@ class NewTrackerDialog extends Component {
                   variant="filled"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   label="Position"
@@ -170,33 +171,32 @@ class NewTrackerDialog extends Component {
                   margin="normal"
                   variant="filled"
                 />                    
-              </Grid>             
-                <Grid container spacing={0}>
-                  <Grid item xs={6}>
-                    <TextField
-                      label="Resume"
-                      value={this.state.resumeLink}
-                      placeholder="A Link to Your Resume"
-                      onChange={this.handleChange('resumeLink')}
-                      variant="filled"
-                    />     
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={this.state.includesCoverLetter}
-                          onChange={this.handleSwitch('includesCoverLetter')}
-                          value="includesCoverLetter"
-                          color="primary"
-                        />
-                      }
-                      label="Includes a Cover Letter?"
-                      labelPlacement="start"
-                    />
-                  </Grid> 
-                  
               </Grid>
+              
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Resume"
+                    value={this.state.resumeLink}
+                    placeholder="Full Link to Resume"
+                    onChange={this.handleChange('resumeLink')}
+                    variant="filled"
+                  />     
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={this.state.includesCoverLetter}
+                        onChange={this.handleSwitch('includesCoverLetter')}
+                        value="includesCoverLetter"
+                        color="primary"
+                      />
+                    }
+                    label="Includes a Cover Letter?"
+                    labelPlacement="start"
+                  />
+                </Grid>                   
+
               <Grid item xs={12}>
                 <TextField
                   id="filled-textarea"
@@ -208,8 +208,7 @@ class NewTrackerDialog extends Component {
                   variant="filled"
                 />
               </Grid>
-              <Grid item xs={12}>
-              
+              <Grid item xs={12}>             
                 <FormControlLabel
                   control={
                     <Switch
@@ -223,56 +222,57 @@ class NewTrackerDialog extends Component {
                   labelPlacement="start"
                 />
               </Grid>
-        
-                {this.state.calledForInterview ?
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={this.state.jobOffered}
-                          onChange={this.handleSwitch('jobOffered')}
-                          value="jobOffered"
-                          color="primary"
-                        />
-                      }
-                      label="Have I Been Offered the Position?"
-                      labelPlacement="start"
-                    />
-                  </Grid>
-                : null }         
-                {this.state.jobOffered && this.state.calledForInterview ?
-                  <Grid item xs={12}>
-                    <FormControlLabel
+              {this.state.calledForInterview ?
+                <Grid item xs={12}>
+                  <FormControlLabel
                     control={
                       <Switch
-                        checked={this.state.acceptedOffer}
-                        onChange={this.handleSwitch('acceptedOffer')}
-                        value="acceptedOffer"
+                        checked={this.state.jobOffered}
+                        onChange={this.handleSwitch('jobOffered')}
+                        value="jobOffered"
                         color="primary"
                       />
                     }
-                    label="Have I Accepted the Position?"
+                    label="Have I Been Offered the Position?"
                     labelPlacement="start"
+                  />
+                </Grid>
+              : null }         
+              {this.state.jobOffered && this.state.calledForInterview ?
+                <Grid item xs={12}>
+                  <FormControlLabel
+                  control={
+                    <Switch
+                      checked={this.state.acceptedOffer}
+                      onChange={this.handleSwitch('acceptedOffer')}
+                      value="acceptedOffer"
+                      color="primary"
                     />
-                  </Grid>
-                : null}
-                <DialogContent>
+                  }
+                  label="Have I Accepted the Position?"
+                  labelPlacement="start"
+                  />
+                </Grid>
+              : null}
+                         
+            </Grid>
+            <DialogContent>
                   <DialogActions>                    
-                    <Button variant="contained" onClick={this.props.cancel}>
+                    <Button variant="contained" onClick={this.props.cancel} color="secondary">
                       Cancel
                     </Button>
-                    < Button variant="contained" label="submit" type="Submit">
+                    < Button variant="contained" label="submit" type="Submit" color="primary">
                       Create
                     </Button>
                   </DialogActions>
-                </DialogContent>
-             
-            </Grid>
+                </DialogContent>  
+
             <Dialog open={this.state.openArchiveAlert}>
               <DialogTitle>{"You've Accepted the Job Offer"}</DialogTitle>
               <DialogContent>
-              <FontAwesomeIcon icon="handshake" color="black" size="7x" />
-
+                <div className="handshake" >
+                  <FontAwesomeIcon icon="handshake" color="black" size="7x" />
+                </div>
                 <DialogContentText>
                   Congratulations! It appears that you've been hired for this job. Would you like to archive this job ticket?
                 </DialogContentText>
@@ -280,7 +280,7 @@ class NewTrackerDialog extends Component {
                   <Button color="primary" onClick={() => this.postArchivedTicket('yes')}>
                     Yes
                   </Button>
-                  <Button color="primary" onClick={() => this.postArchivedTicket('no')}>
+                  <Button color="secondary" onClick={() => this.postArchivedTicket('no')}>
                     No
                   </Button>
                 </DialogActions>
