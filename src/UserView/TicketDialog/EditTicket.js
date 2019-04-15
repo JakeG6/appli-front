@@ -49,7 +49,7 @@ class EditTicket extends Component {
         event.preventDefault();
         await axios({
             method: 'put',
-            url: `http://localhost:4242/updateticket/${this.state.ticketId}`,
+            url: `/updateticket/${this.state.ticketId}`,
             data: {
                 ticketId: this.state.ticketId,
                 companyName: this.state.companyName,

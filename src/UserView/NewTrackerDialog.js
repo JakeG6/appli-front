@@ -64,7 +64,7 @@ class NewTrackerDialog extends Component {
     if (!this.state.acceptedOffer) {
       axios({
         method: 'post',
-        url: 'http://localhost:4242/createticket',
+        url: '/createticket',
         data: {
           userId: this.state.userId,
           companyName: this.state.companyName,
@@ -104,7 +104,7 @@ class NewTrackerDialog extends Component {
 
     axios({
       method: 'post',
-      url: 'http://localhost:4242/createticket',
+      url: '/createticket',
       data: {
         userId: this.state.userId,
         companyName: this.state.companyName,

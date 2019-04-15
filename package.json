@@ -2,7 +2,7 @@
   "name": "appli-front",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4242",
+  "proxy": "https://appli-api.herokuapp.com",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.16",
     "@fortawesome/free-solid-svg-icons": "^5.8.0",

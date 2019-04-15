@@ -10,7 +10,7 @@ class SignupSuccess extends Component {
     }
 
     componentDidMount() {
-        this.id = setTimeout(() => this.setState({ redirect: true }), 4000)
+        this.id = setTimeout(() => this.setState({ redirect: true }), 3000)
     }
     
     componentWillUnmount() {

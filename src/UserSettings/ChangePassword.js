@@ -38,7 +38,7 @@ class ChangePassword extends Component {
         this.setState({loading: true}, () => {
             return axios({
                 method: 'put',
-                url: `http://localhost:4242/updatepassword`,
+                url: `/updatepassword`,
                 data: {
                     oldPassword: this.state.oldPassword,
                     newPassword: this.state.newPassword,
