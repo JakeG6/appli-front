@@ -167,7 +167,7 @@ class UserView extends Component {
             {
               this.state.loading ? LoadingSpinner()
               :             
-              (this.state.userTickets.length > 1) ?
+              (this.state.userTickets.length >= 1) ?
               <Fade in={this.state.userTickets}>
                 <Grid container spacing={16} direction="row" justify="center" alignItems="center">
                   {this.state.userTickets.map((ticket, index) =>
