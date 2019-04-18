@@ -134,7 +134,11 @@ class Home extends Component {
 
             //if the current time on rendering is earlier than the expiration date, show the page.
             if (currentTime < decoded.exp) {
-                return (<Redirect to='/inner' />)
+                console.log('we are still logged in')
+                this.props.history.push('/inner')
+            }
+            else {
+                localStorage.removeItem('jwtToken')
             }            
         }
 
@@ -195,7 +199,7 @@ class Home extends Component {
                     </form>
                 </Dialog>                 
             </div>
-        )
+        ) 
     }
 }
 

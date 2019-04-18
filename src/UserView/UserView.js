@@ -108,12 +108,15 @@ class UserView extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem('jwtToken')) {
-      let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+    const storedToken = localStorage.getItem('jwtToken')
+    if (storedToken) {
+      //console.log('there is a token here')
+      let decoded = jwt_decode(storedToken)
       this.setState({currentUsername: decoded.name})
       this.retrieveTickets()    
     }
     else {
+      //console.log('there is not a token here')
       localStorage.removeItem('jwtToken')
       this.props.history.push('/')
     }    
@@ -144,64 +147,76 @@ class UserView extends Component {
       }
     }
        
-    //decode the jwt's payload.
-    let decoded = jwt_decode(localStorage.getItem('jwtToken'))
-    //get the current time
-    let currentTime = Math.floor(Date.now() / 1000)
+    // //decode the jwt's payload.
+    // let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+    // //get the current time
+    // let currentTime = Math.floor(Date.now() / 1000)
 
     //if the current time on rendering is earlier than the expiration date, show the page.
-    if (currentTime < decoded.exp || localStorage.getItem('jwtToken') === false) {       
-      
-      return (
-        <div className="App">   
-          <UserAppBar
-            changeSortOrder={this.changeSortOrder}
-            handleLogout={this.props.handleLogout}
-            currentUsername={this.state.currentUsername}
-            retrieveTickets={this.retrieveTickets}
-            showArchived={this.state.showArchived}
-            sortOrder={this.state.sortOrder}
-            handleSwitch={this.handleSwitch}  
-          /> 
-          <div className="ticket-tray" style={{ padding: 8 }}>
-            {
-              this.state.loading ? LoadingSpinner()
-              :             
-              (this.state.userTickets.length >= 1) ?
-              <Fade in={this.state.userTickets}>
-                <Grid container spacing={16} direction="row" justify="center" alignItems="center">
-                  {this.state.userTickets.map((ticket, index) =>
-                    <Grid  key={index.toString()} item xs={6} sm={3} md={2} onClick={()=>this.handleTicketOpen(ticket, index)}>
-                      <Ticket ticket={ticket}  />
-                    </Grid>  
-                  )}
-                </Grid>
-              </Fade>
-              :
-              <Fade in={this.state.userTickets}>
-              <p> You haven't made any job tickets yet.</p>
-              </Fade>
-            }
-            <Fab color="primary" onClick={this.handleClickOpen} style={styles.fabStyle} >
-              <AddIcon  />
-            </Fab>
-          </div>
+    if (localStorage.getItem('jwtToken')) {       
 
-          {/* new ticket Form */}
-          <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
-            <NewTrackerDialog currentUsername={'yes'} cancel={this.handleClose} 
-            handleClose={this.handleClose} retrieveTickets={this.retrieveTickets}
-            />
-          </Dialog>
+      //decode the jwt's payload.
+      let decoded = jwt_decode(localStorage.getItem('jwtToken'))
+      //get the current time
+      let currentTime = Math.floor(Date.now() / 1000)
 
-          {/* view ticket details */}
-          <Dialog open={this.state.openTicket} onClose={this.handleTicketClose} >
-            <TicketDialog close={this.handleTicketClose} handleTicketClose={this.handleTicketClose}
-              ticket={this.state.ticketDetails} retrieveTickets={this.retrieveTickets}
-              getUpdatedTicketDetails = {this.getUpdatedTicketDetails} showArchived={this.state.showArchived} />
-          </Dialog>
-       </div>
-      );
+      if (currentTime < decoded.exp) {
+        return (
+          <div className="App">   
+            <UserAppBar
+              changeSortOrder={this.changeSortOrder}
+              handleLogout={this.props.handleLogout}
+              currentUsername={this.state.currentUsername}
+              retrieveTickets={this.retrieveTickets}
+              showArchived={this.state.showArchived}
+              sortOrder={this.state.sortOrder}
+              handleSwitch={this.handleSwitch}  
+            /> 
+            <div className="ticket-tray" style={{ padding: 8 }}>
+              {
+                this.state.loading ? LoadingSpinner()
+                :             
+                (this.state.userTickets.length >= 1) ?
+                <Fade in={this.state.userTickets}>
+                  <Grid container spacing={16} direction="row" justify="center" alignItems="center">
+                    {this.state.userTickets.map((ticket, index) =>
+                      <Grid  key={index.toString()} item xs={6} sm={3} md={2} onClick={()=>this.handleTicketOpen(ticket, index)}>
+                        <Ticket ticket={ticket}  />
+                      </Grid>  
+                    )}
+                  </Grid>
+                </Fade>
+                :
+                <Fade in={this.state.userTickets}>
+                <p> You haven't made any job tickets yet.</p>
+                </Fade>
+              }
+              <Fab color="primary" onClick={this.handleClickOpen} style={styles.fabStyle} >
+                <AddIcon  />
+              </Fab>
+            </div>
+
+            {/* new ticket Form */}
+            <Dialog open={this.state.open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
+              <NewTrackerDialog currentUsername={'yes'} cancel={this.handleClose} 
+              handleClose={this.handleClose} retrieveTickets={this.retrieveTickets}
+              />
+            </Dialog>
+
+            {/* view ticket details */}
+            <Dialog open={this.state.openTicket} onClose={this.handleTicketClose} >
+              <TicketDialog close={this.handleTicketClose} handleTicketClose={this.handleTicketClose}
+                ticket={this.state.ticketDetails} retrieveTickets={this.retrieveTickets}
+                getUpdatedTicketDetails = {this.getUpdatedTicketDetails} showArchived={this.state.showArchived} />
+            </Dialog>
+        </div>
+        );
+      }
+      else {
+        localStorage.removeItem('jwtToken')
+        return (<Redirect to="/" />) 
+      }
+
     }
     //otherwise, send the user to the login page.
     else { 
