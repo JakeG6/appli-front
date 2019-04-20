@@ -23,7 +23,10 @@ body {
 }
 
 .arrowContainer {
-  margin-left: 1em;
+  margin-left: 80px;
+}
+
+.arrowContainer:hover {
   color: black;
 }
 
