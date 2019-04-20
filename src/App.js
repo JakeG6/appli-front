@@ -33,7 +33,7 @@ class App extends Component {
           <div className="app">
             <div className="portfolioBar">
               <div className="arrowContainer">
-                <a href="https://jake-guss.herokuapp.com/"><FontAwesomeIcon icon="arrow-left" color="white" size="3x" /></a>
+                <a href="https://jake-guss.herokuapp.com/portfolio"><FontAwesomeIcon icon="arrow-left" color="white" size="3x" /></a>
               </div>
             </div>
             <Route exact path="/" render={(props) => 
