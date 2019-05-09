@@ -49,7 +49,6 @@ class ChangePassword extends Component {
                 }  
                 })
                 .then(response => {                          
-                    
                     this.setState({loading: false, didUpdatePW: true})      
                  })
                 .catch((error) => {
