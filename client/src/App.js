@@ -31,11 +31,6 @@ class App extends Component {
 
         <Router>
           <div className="app">
-            <div className="portfolioBar">
-              <div className="arrowContainer">
-                <a href="https://jake-guss.herokuapp.com/portfolio"><FontAwesomeIcon icon="arrow-left" color="white" size="3x" /></a>
-              </div>
-            </div>
             <Route exact path="/" render={(props) => 
               <Home {...props} />
             }/>

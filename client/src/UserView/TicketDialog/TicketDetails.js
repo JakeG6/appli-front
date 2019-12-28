@@ -42,7 +42,7 @@ class TicketDetails extends Component {
     }
 
     deleteTicket = () => {
-        axios.delete(`https://appli-api.herokuapp.com/deleteticket/${this.props.ticket.ticket_id}`, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
+        axios.delete(`/api/deleteticket/${this.props.ticket.ticket_id}`, {headers: { "Authorization": "Bearer " + localStorage.getItem('jwtToken') }})
             .then(response => {
                 return this.props.retrieveTickets()
 

@@ -47,7 +47,7 @@ class Home extends Component {
     };
 
     checkUniqueUsername(username) {
-        return axios.get(`https://appli-api.herokuapp.com/checkuniquename/${username}`)
+        return axios.get(`/api/checkuniquename/${username}`)
         .then((response) => {
             if (response.data === false) {
                 this.setState({registrationMessage: "Sorry, but that username is taken"})
@@ -66,7 +66,7 @@ class Home extends Component {
         event.preventDefault();
 
         //Make a network call somewhere
-        axios.post(`https://appli-api.herokuapp.com/login`, {
+        axios.post(`/api/login`, {
             username: this.state.name,
             password: this.state.password
         })
@@ -94,7 +94,7 @@ class Home extends Component {
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
                 if (isUnique === true) {
-                    axios.post('https://appli-api.herokuapp.com/createuser', {
+                    axios.post('/api/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
                     })
@@ -156,6 +156,19 @@ class Home extends Component {
                             <Grid item xs={12} sm={6}>
                                 <FormControl margin="normal">
                                     <InputLabel htmlFor="component-simple">Name</InputLabel>
+                                    <Input  autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Password</InputLabel>
+                                    <Input  autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
+                                </FormControl>
+                            </Grid>
+                        {/* <Grid container spacing={16} direction="row" justify="center">
+                            <Grid item xs={12} sm={6}>
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Name</InputLabel>
                                     <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
                                 </FormControl>
                             </Grid>
@@ -164,7 +177,7 @@ class Home extends Component {
                                     <InputLabel htmlFor="component-simple">Password</InputLabel>
                                     <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
                                 </FormControl>
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={12} sm={6}>
                                 <Button  color="primary" label="submit" type="Submit" variant="contained" >Log In</Button>
                             </Grid>
