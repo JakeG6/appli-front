@@ -156,6 +156,19 @@ class Home extends Component {
                             <Grid item xs={12} sm={6}>
                                 <FormControl margin="normal">
                                     <InputLabel htmlFor="component-simple">Name</InputLabel>
+                                    <Input  autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Password</InputLabel>
+                                    <Input  autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
+                                </FormControl>
+                            </Grid>
+                        {/* <Grid container spacing={16} direction="row" justify="center">
+                            <Grid item xs={12} sm={6}>
+                                <FormControl margin="normal">
+                                    <InputLabel htmlFor="component-simple">Name</InputLabel>
                                     <Input id="component-simple" autoComplete='off' value={this.state.name}  onChange={this.handleChange('name')} />
                                 </FormControl>
                             </Grid>
@@ -164,7 +177,7 @@ class Home extends Component {
                                     <InputLabel htmlFor="component-simple">Password</InputLabel>
                                     <Input id="component-simple" autoComplete='off' type="password" value={this.state.password} onChange={this.handleChange('password')} />
                                 </FormControl>
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={12} sm={6}>
                                 <Button  color="primary" label="submit" type="Submit" variant="contained" >Log In</Button>
                             </Grid>
