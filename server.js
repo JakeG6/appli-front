@@ -10,12 +10,11 @@ const cors = require('cors')
 const db = require('./db.js')
 require('./passportStuff')
 
-
 app.use(favicon(__dirname + '/client/build/favicon.ico'));
 
 // the __dirname is the current directory from where the script is running
 app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'client','build')));
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 //API routes
 const login = require('./routes/login.js')
