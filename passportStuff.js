@@ -11,8 +11,7 @@ const opts = {
 }
 
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    console.log(`the jwt_payload is ${jwt_payload}`)
-    console.log('we are in the jwt strategy. we are going to search the db')
+
     db.getConnection(function(err, connection) {
         if (err) throw err;
         connection.query(
@@ -22,11 +21,10 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
                 return done(err)
             }
             else{
-                console.log("let's check if we got the user")      
                 if (user) {
-                    console.log(user)
                     return done(null, user)
-                } else {
+                } 
+                else {
                     return done(null, false)
                 }
             }

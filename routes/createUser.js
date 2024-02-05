@@ -1,11 +1,6 @@
 const express = require('express')
 const router = express.Router();
-
 const bcrypt = require('bcrypt');
-
-var cors = require('cors')
-
-const bodyParser = require('body-parser')
 require('../passportStuff');
 
 const db = require('../db.js')
@@ -19,11 +14,9 @@ const db = require('../db.js')
 router.post('/', (req, res) => {
     let username = req.body.username
     let password = req.body.password
-    console.log(`the body is ${username} and ${password}`)
   
     bcrypt.hash(password, 10, function(err, hash) {
       // Store hash in your password DB.
-      console.log(hash)
       db.getConnection(function(err, connection) {
         //connection.release();
   
@@ -35,9 +28,6 @@ router.post('/', (req, res) => {
               console.log("error: ", err)
             }
             else {
-              
-              console.log(dbResponse)
-
               res.send(dbResponse)
             }
           })

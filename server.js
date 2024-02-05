@@ -59,19 +59,16 @@ app.use('/api/login', login);
 
 //Check if user is authorized
 app.get('/api/isauthorized', passport.authenticate('jwt', { session: false }), (req, res) => {
-
   res.json(req.user)
 })
 
 //Check current user
 app.get('/api/currentuser', passport.authenticate('jwt', { session: false }), (req, res) => {
-
   res.json(req.user)
 })
 
 //Attempt to log out
 app.get('/api/logout', function(req, res){
-
   req.logout();
   res.redirect('/');
 });

@@ -1,10 +1,6 @@
 const express = require('express')
 const router = express.Router();
-var cors = require('cors')
-
-const bodyParser = require('body-parser')
 require('../passportStuff');
-
 const db = require('../db.js')
 
 //router.use(cors())
@@ -14,9 +10,7 @@ const db = require('../db.js')
 // router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 router.get('/:username', (req, res) => {
-
   let newUsername = req.params.username
-  console.log("we're about to check if the username exists")
   db.getConnection(function(err, connection) {
     connection.release();
 
@@ -27,11 +21,9 @@ router.get('/:username', (req, res) => {
       }
       else{
         if (dbResponse[0]) {
-
           res.send(false)
         }
         else {
-
           res.send(true)}
       }
     })  

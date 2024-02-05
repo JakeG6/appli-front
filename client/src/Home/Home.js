@@ -62,7 +62,7 @@ class Home extends Component {
         });
     }
 
-    handleLogin = event => {
+    handleLogin = (event) => {
         event.preventDefault();
 
         //Make a network call somewhere
@@ -93,7 +93,7 @@ class Home extends Component {
             //check that the new username isn't already in the database
             this.checkUniqueUsername(this.state.newUsername)
             .then(isUnique => {
-                if (isUnique === true) {
+                if (isUnique) {
                     axios.post('/api/createuser', {
                         username: this.state.newUsername,
                         password: this.state.newPassword
@@ -134,7 +134,6 @@ class Home extends Component {
 
             //if the current time on rendering is earlier than the expiration date, show the page.
             if (currentTime < decoded.exp) {
-                console.log('we are still logged in')
                 this.props.history.push('/inner')
             }
             else {

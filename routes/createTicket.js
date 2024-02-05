@@ -1,10 +1,5 @@
 const express = require('express')
 const router = express.Router();
-
-var cors = require('cors')
-
-const bodyParser = require('body-parser')
-// const passport = require('passport')
 require('../passportStuff');
 
 const db = require('../db.js')

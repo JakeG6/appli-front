@@ -1,8 +1,5 @@
 const express = require('express')
 const router = express.Router();
-
-var cors = require('cors')
-
 const bodyParser = require('body-parser')
 const passport = require('passport')
 require('../passportStuff');
@@ -43,8 +40,6 @@ router.put('/:ticket_id', passport.authenticate('jwt', { session: false }), (req
             console.log("error: ", err)
           }
           else {
-            console.log('we updated the ticket')
-
             res.send(dbResponse)
           }
       })

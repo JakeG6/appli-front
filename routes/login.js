@@ -4,21 +4,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const keys = require('../keys')
 
-const bodyParser = require('body-parser')
 require('../passportStuff');
 
 const db = require('../db.js')
 
 //app.use(cors())
 
-
-
-
 // parse application/x-www-form-urlencoded
 // router.use(bodyParser.json()); // support json encoded bodies
 // router.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
-
 
 //attempt to login
 router.post('/', function(req, res) {
@@ -39,16 +33,11 @@ router.post('/', function(req, res) {
       }
     
       connection.query(`SELECT * FROM users WHERE username = "${username}"`, function (err, user) {
-        console.log(`here is the hash in the db: ${user[0].password}`)      
         if(err || !user) {
           return res.status(404).json({username: 'User not found'});
         }
-        console.log('we will compare: ', password, user[0].password)      
         bcrypt.compare(password, user[0].password, (err, result) => {       
-          if(err) {console.log(err)}
-  
           if (result) {
-            console.log("Passwords match");
   
             // Create JWT Payload
             const payload = { id: user[0].user_id, name: user[0].username, color: user[0].color } 
@@ -62,8 +51,6 @@ router.post('/', function(req, res) {
             });
           }
           else { 
-            console.log('passwords do not match')
-
             return res.status(404).json({username: `password doesn't match`})
           }
         })

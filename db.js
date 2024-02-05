@@ -1,11 +1,11 @@
-const mysql = require('mysql') 
+const mysql = require('mysql'); 
 
 const db = mysql.createPool({
     connectionLimit : 10,
-    host            : 'us-cdbr-iron-east-03.cleardb.net',
-    user            : 'bbf3049ec788cd',
-    password        : 'c3a0d3b8',
-    database        : 'heroku_125e5b843934f78'
+    host            : 'sql3.freesqldatabase.com',
+    user            : 'sql3681993',
+    password        : '1UnRECwMcM',
+    database        : 'sql3681993'
 });
 
 module.exports = db
