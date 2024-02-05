@@ -38,7 +38,7 @@
     "webpack": "^4.19.1"
   },
   "scripts": {
-    "build": "cd client && react-scripts --openssl-legacy-provider build",
+    "build": "cd client && npm run build",
     "dev": "react-scripts start",
     "start": "node server.js",
     "test": "react-scripts test",
